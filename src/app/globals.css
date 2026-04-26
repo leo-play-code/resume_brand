@@ -1,26 +1,180 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ─── Keyframes ────────────────────────────────────── */
+@keyframes marquee-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
+@keyframes marquee-right {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+@keyframes grain-move {
+  0%, 100% { transform: translate(0, 0); }
+  10%       { transform: translate(-2%, -3%); }
+  20%       { transform: translate(3%, 2%); }
+  30%       { transform: translate(-1%, 4%); }
+  40%       { transform: translate(2%, -2%); }
+  50%       { transform: translate(-3%, 1%); }
+  60%       { transform: translate(1%, -4%); }
+  70%       { transform: translate(3%, 3%); }
+  80%       { transform: translate(-2%, 1%); }
+  90%       { transform: translate(2%, -1%); }
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ─── Tailwind v4 Theme ────────────────────────────── */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --animate-marquee-left:  marquee-left  30s linear infinite;
+  --animate-marquee-right: marquee-right 35s linear infinite;
+  --animate-cursor-blink:  cursor-blink  1s step-end infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Dark theme (default) ─────────────────────────── */
+:root {
+  --background: #050510;
+  --foreground: #ffffff;
+
+  --fg-60: rgba(255, 255, 255, 0.60);
+  --fg-55: rgba(255, 255, 255, 0.55);
+  --fg-50: rgba(255, 255, 255, 0.50);
+  --fg-45: rgba(255, 255, 255, 0.45);
+  --fg-40: rgba(255, 255, 255, 0.40);
+  --fg-35: rgba(255, 255, 255, 0.35);
+  --fg-25: rgba(255, 255, 255, 0.25);
+  --fg-20: rgba(255, 255, 255, 0.20);
+
+  --surface:     rgba(255, 255, 255, 0.030);
+  --surface-2:   rgba(255, 255, 255, 0.040);
+  --border:      rgba(255, 255, 255, 0.08);
+  --grid-line:   rgba(255, 255, 255, 0.025);
+
+  --nav-scrolled-bg:     rgba(5, 5, 16, 0.88);
+  --nav-border-scrolled: rgba(255, 255, 255, 0.06);
+
+  --accent-purple: #8b5cf6;
+  --accent-blue:   #3b82f6;
+  --accent-cyan:   #06b6d4;
+}
+
+/* ─── Light theme ──────────────────────────────────── */
+[data-theme="light"] {
+  --background: #f4f1ff;
+  --foreground: #13122a;
+
+  --fg-60: rgba(19, 18, 42, 0.65);
+  --fg-55: rgba(19, 18, 42, 0.62);
+  --fg-50: rgba(19, 18, 42, 0.58);
+  --fg-45: rgba(19, 18, 42, 0.52);
+  --fg-40: rgba(19, 18, 42, 0.46);
+  --fg-35: rgba(19, 18, 42, 0.42);
+  --fg-25: rgba(19, 18, 42, 0.32);
+  --fg-20: rgba(19, 18, 42, 0.25);
+
+  --surface:     rgba(255, 255, 255, 0.72);
+  --surface-2:   rgba(255, 255, 255, 0.85);
+  --border:      rgba(139, 92, 246, 0.18);
+  --grid-line:   rgba(139, 92, 246, 0.055);
+
+  --nav-scrolled-bg:     rgba(244, 241, 255, 0.92);
+  --nav-border-scrolled: rgba(139, 92, 246, 0.15);
+}
+
+/* ─── Semantic utilities ───────────────────────────── */
+@utility text-fg      { color: var(--foreground); }
+@utility text-fg-60   { color: var(--fg-60); }
+@utility text-fg-55   { color: var(--fg-55); }
+@utility text-fg-50   { color: var(--fg-50); }
+@utility text-fg-45   { color: var(--fg-45); }
+@utility text-fg-40   { color: var(--fg-40); }
+@utility text-fg-35   { color: var(--fg-35); }
+@utility text-fg-25   { color: var(--fg-25); }
+@utility text-fg-20   { color: var(--fg-20); }
+@utility bg-base      { background-color: var(--background); }
+@utility bg-surface   { background-color: var(--surface); }
+@utility bg-surface-2 { background-color: var(--surface-2); }
+@utility border-theme { border-color: var(--border); }
+
+/* ─── Base ─────────────────────────────────────────── */
+html {
+  scroll-behavior: auto;
+}
+
+button, a, select,
+[role="button"], [role="tab"], [role="option"],
+label[for], summary {
+  cursor: pointer;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ─── Navbar scroll state ──────────────────────────── */
+nav {
+  transition: background-color 0.35s ease, border-color 0.35s ease,
+              backdrop-filter 0.35s ease, -webkit-backdrop-filter 0.35s ease;
+}
+
+nav.nav-scrolled {
+  background-color: var(--nav-scrolled-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom-color: var(--nav-border-scrolled);
+}
+
+/* ─── Grain overlay ────────────────────────────────── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: -150%;
+  width: 400%;
+  height: 400%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain-move 8s steps(10) infinite;
+}
+
+/* ─── Scrollbar ────────────────────────────────────── */
+::-webkit-scrollbar        { width: 5px; }
+::-webkit-scrollbar-track  { background: var(--background); }
+::-webkit-scrollbar-thumb  { background: rgba(139, 92, 246, 0.45); border-radius: 3px; }
+
+/* ─── Utility classes ──────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 50%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glow-purple {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.35), 0 0 60px rgba(139, 92, 246, 0.12);
+}
+
+.glow-card {
+  box-shadow: 0 0 40px rgba(139, 92, 246, 0.15);
+}
+
+/* ─── Marquee pause on group hover ────────────────── */
+.marquee-group:hover .animate-marquee-left,
+.marquee-group:hover .animate-marquee-right {
+  animation-play-state: paused;
 }

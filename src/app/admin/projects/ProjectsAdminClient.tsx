@@ -1,0 +1,156 @@
+"use client";
+
+import { useState, useTransition } from "react";
+import type { Project } from "@prisma/client";
+import { Trash2, Plus, X } from "lucide-react";
+import SkillPicker from "@/components/ui/SkillPicker";
+
+interface Props {
+  projects: Project[];
+  addProject: (formData: FormData) => Promise<void>;
+  deleteProject: (id: string) => Promise<void>;
+}
+
+export default function ProjectsAdminClient({
+  projects,
+  addProject,
+  deleteProject,
+}: Props) {
+  const [showForm, setShowForm] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  function handleDelete(id: string) {
+    if (!confirm("Delete this project?")) return;
+    startTransition(() => deleteProject(id));
+  }
+
+  function handleAdd(formData: FormData) {
+    startTransition(async () => {
+      await addProject(formData);
+      setShowForm(false);
+    });
+  }
+
+  return (
+    <div>
+      <div className="space-y-3 mb-6">
+        {projects.length === 0 && (
+          <p className="text-white/30 text-sm py-6 text-center border border-dashed border-white/10 rounded-xl">
+            No projects yet. Add your first one below.
+          </p>
+        )}
+        {projects.map((p) => (
+          <div
+            key={p.id}
+            className="flex items-center gap-4 px-4 py-3.5 rounded-xl border border-white/[0.07] bg-white/[0.02]"
+          >
+            <div className="flex-1 min-w-0">
+              <p className="text-white text-sm font-medium truncate">{p.name}</p>
+              <p className="text-white/35 text-xs truncate">{p.description}</p>
+            </div>
+            {p.featured && (
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-400 font-mono shrink-0">
+                featured
+              </span>
+            )}
+            <button
+              onClick={() => handleDelete(p.id)}
+              disabled={isPending}
+              className="p-1.5 text-white/25 hover:text-red-400 transition-colors shrink-0"
+            >
+              <Trash2 size={15} />
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {!showForm ? (
+        <button
+          onClick={() => setShowForm(true)}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-dashed border-purple-500/30 text-purple-400 text-sm hover:bg-purple-500/[0.06] transition-all duration-200"
+        >
+          <Plus size={16} />
+          Add Project
+        </button>
+      ) : (
+        <form
+          action={handleAdd}
+          className="border border-white/[0.08] bg-white/[0.02] rounded-2xl p-6 space-y-4"
+        >
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-white font-medium">New Project</h3>
+            <button
+              type="button"
+              onClick={() => setShowForm(false)}
+              className="text-white/30 hover:text-white"
+            >
+              <X size={18} />
+            </button>
+          </div>
+
+          <Field label="Name *" name="name" required />
+          <Field label="Short description (tagline) *" name="description" required />
+          <Field label="Long description (2-3 sentences)" name="long_description" type="textarea" />
+          <Field label="Video URL (e.g. /videos/demo.mp4)" name="video_url" />
+          <Field label="GitHub URL" name="github_url" type="url" />
+          <Field label="Live URL" name="live_url" type="url" />
+          <div>
+            <label className="block text-white/50 text-xs mb-1.5">Tech Stack</label>
+            <SkillPicker name="tech_stack" />
+          </div>
+          <Field label="Display order (0 = first)" name="display_order" type="number" />
+
+          <div className="flex items-center gap-2">
+            <input type="checkbox" id="featured" name="featured" className="accent-purple-500" />
+            <label htmlFor="featured" className="text-white/60 text-sm">
+              Featured project
+            </label>
+          </div>
+
+          <div className="flex gap-3 pt-2">
+            <button
+              type="submit"
+              disabled={isPending}
+              className="px-5 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-sm font-medium transition-colors disabled:opacity-50"
+            >
+              {isPending ? "Saving…" : "Save Project"}
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowForm(false)}
+              className="px-5 py-2 rounded-lg border border-white/10 text-white/50 hover:text-white text-sm transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      )}
+    </div>
+  );
+}
+
+function Field({
+  label,
+  name,
+  type = "text",
+  required,
+}: {
+  label: string;
+  name: string;
+  type?: string;
+  required?: boolean;
+}) {
+  const base =
+    "w-full px-3 py-2 rounded-lg border border-white/[0.08] bg-white/[0.03] text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-purple-500/50";
+
+  return (
+    <div>
+      <label className="block text-white/50 text-xs mb-1.5">{label}</label>
+      {type === "textarea" ? (
+        <textarea name={name} rows={3} className={`${base} resize-none`} />
+      ) : (
+        <input type={type} name={name} required={required} className={base} />
+      )}
+    </div>
+  );
+}

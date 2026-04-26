@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Project {
+  id              String   @id @default(uuid())
+  name            String
+  description     String   @default("")
+  longDescription String   @default("") @map("long_description")
+  videoUrl        String   @default("") @map("video_url")
+  githubUrl       String?  @map("github_url")
+  liveUrl         String?  @map("live_url")
+  techStack       String[] @map("tech_stack")
+  featured        Boolean  @default(false)
+  displayOrder    Int      @default(0) @map("display_order")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@map("projects")
+}
+
+model TechStack {
+  id           String @id @default(uuid())
+  name         String
+  color        String @default("#ffffff")
+  rowNumber    Int    @default(1) @map("row_number")
+  displayOrder Int    @default(0) @map("display_order")
+
+  @@map("tech_stack")
+}
+
+model Experience {
+  id           String   @id @default(uuid())
+  company      String
+  role         String
+  period       String
+  description  String[]
+  type         String   @default("work")
+  displayOrder Int      @default(0) @map("display_order")
+
+  @@map("experiences")
+}
+
+model Skill {
+  id        String   @id @default(uuid())
+  nameZh    String   @map("name_zh")
+  nameEn    String   @map("name_en")
+  category  String
+  isCustom  Boolean  @default(false) @map("is_custom")
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([category])
+  @@index([isActive])
+  @@map("skills")
+}
