@@ -118,6 +118,7 @@
 
 ### Pending
 - [ ] [Integration] Admin layout 背景色與前台 `--background` CSS var 一致
+- [ ] [Regression] Prisma Client stale after migration — 確認新增 model 後 `npx prisma generate` 已執行，`prisma.siteSettings.findUnique` 不再拋出 undefined error
 
 ### Done
 - [x] `LoadingSpinner.test.tsx` — unit tests (5 cases; completed: 2026-04-26)
@@ -131,3 +132,6 @@
 - [x] `ExperienceAdminClient.test.tsx` — integration tests (8 cases; completed: 2026-04-26)
 - [x] `actions/settings.test.ts` — integration tests (5 cases: getSiteSettings DB record, getSiteSettings null→defaults, updateSiteSettings valid hex, updateSiteSettings invalid hex, updateSiteSettings no session; completed: 2026-04-26)
 - [x] `app/__tests__/layout.test.tsx` — [Regression] HTML theme hydration mismatch — Manual verification only; `suppressHydrationWarning` added to `<html>` in layout.tsx + inline script restores `data-theme`; full test requires browser/Playwright (completed: 2026-04-26)
+- [x] `color.test.ts` — `isLightColor` + `buildCssVars` unit tests (12 cases: pure white, lavender-white, near-black, deep-blue-black, boundary #808080, dark bg foreground, light bg foreground, --background injection, --surface/--border/--fg-60 presence for both modes) + 2 layout integration cases; completed: 2026-04-26
+- [x] `layout 色彩注入` — isLightColor('#f4f1ff')===true → buildCssVars foreground=#13122a；isLightColor('#050510')===false → buildCssVars foreground=#ffffff (covered in color.test.ts; completed: 2026-04-26)
+- [x] [Regression] Admin text invisible on light background — 已修復 — Admin 全站改用 text-fg/bg-surface 語意類，foreground 由 buildCssVars 動態計算 (completed: 2026-04-26)

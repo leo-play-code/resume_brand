@@ -24,11 +24,14 @@
 - **[UI] ExperienceAdmin 學歷 Picker** — education 切換 UniversityPicker
 - **[UI] SkillPicker Component** — TechAdmin + ProjectAdmin 可搜尋技能選擇器
 
-### 🟡 進行中 / Pending（Round 3）
+### ✅ 已完成（Round 3）
 - **[SETTINGS] 全站背景色管理** — Admin Settings 頁面可自訂 Dark/Light 背景色，存 DB，注入前台 CSS var
 - **[UX] Admin 背景色同步** — Admin layout 改用 `var(--background)` 與前台一致
 - **[PERF] Loading States** — `loading.tsx` 骨架屏 + NavigationProgress 頂部進度條
 - **[PERF] Mutation feedback 優化** — Admin 表單 isPending 時顯示 LoadingSpinner
+
+### 🟡 進行中 / Pending（Round 4）
+- **[THEME] Adaptive Text Color** — 根據背景亮度自動計算前景色（foreground / fg-* / surface / border），注入完整 CSS vars；Admin 全站改用語意色彩類（`text-fg`、`bg-surface`），背景變淺時文字自動變深
 
 ## Spec Files
 - [specs/data-models.md](specs/data-models.md)

@@ -289,7 +289,15 @@ src/
 
 ## Task Status
 
-### Pending
+### Done (Feature 8 — Adaptive Theme Colors)
+- [x] 新建 `src/lib/utils/color.ts` — `isLightColor(hex)` + `buildCssVars(bg, isLight)` 工具函式
+- [x] 修改 `src/app/layout.tsx` — 用 `buildCssVars` 注入完整 CSS vars（包含 `--foreground`、`--fg-*`、`--surface`、`--border`）
+- [x] 修改 `src/app/globals.css` — 移除 `.admin-shell` 硬覆蓋區塊
+- [x] 修改 `src/app/admin/layout.tsx` — 移除 `admin-shell` class
+- [x] 取代 Admin 全站 `text-white` → `text-fg`（所有 admin 子檔案）
+- [x] 取代 Admin 全站 `text-white/50` / `text-white/35` / `text-white/30` / `text-white/25` / `text-white/20` → `text-fg-50` / `text-fg-35` / `text-fg-35` / `text-fg-25` / `text-fg-20`
+- [x] 取代 Admin 全站 `hover:text-white` → `hover:text-fg`
+- [x] 取代 Admin 全站 `bg-white/[0.02]` / `bg-white/[0.03]` / `bg-white/[0.04]` → `bg-surface` / `bg-surface` / `bg-surface-2`
 
 ### Done (Feature 5–7)
 - [x] 修改 `src/app/admin/layout.tsx` — 硬編碼色改用 `bg-base` / `border-theme`，加 Settings nav

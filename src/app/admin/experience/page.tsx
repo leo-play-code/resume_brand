@@ -9,8 +9,8 @@ export default async function ExperienceAdminPage() {
     <div className="p-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-white">Experience</h1>
-          <p className="text-white/35 text-sm mt-1">
+          <h1 className="text-2xl font-bold text-fg">Experience</h1>
+          <p className="text-fg-35 text-sm mt-1">
             {items.length} entr{items.length !== 1 ? "ies" : "y"}
           </p>
         </div>

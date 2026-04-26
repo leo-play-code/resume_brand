@@ -20,14 +20,14 @@ export default async function AdminLayout({
   if (!session) redirect("/admin/login");
 
   return (
-    <div className="min-h-screen bg-base text-white">
+    <div className="min-h-screen bg-base text-fg">
       {/* Sidebar */}
       <aside className="fixed top-0 left-0 h-full w-56 border-r border-theme bg-base flex flex-col">
         <div className="px-6 py-5 border-b border-theme">
           <Link href="/" className="text-sm font-mono gradient-text font-bold">
             ← Portfolio
           </Link>
-          <p className="text-white/30 text-xs mt-1 truncate">
+          <p className="text-fg-35 text-xs mt-1 truncate">
             {session.user?.name}
           </p>
         </div>
@@ -37,7 +37,7 @@ export default async function AdminLayout({
             <Link
               key={item.href}
               href={item.href}
-              className="block px-3 py-2 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/[0.04] transition-all duration-150"
+              className="block px-3 py-2 rounded-lg text-sm text-fg-50 hover:text-fg hover:bg-surface-2 transition-all duration-150"
             >
               {item.label}
             </Link>
@@ -47,7 +47,7 @@ export default async function AdminLayout({
         <div className="px-3 py-4 border-t border-theme">
           <a
             href="/api/auth/signout"
-            className="block px-3 py-2 rounded-lg text-xs text-white/30 hover:text-red-400 transition-colors duration-150"
+            className="block px-3 py-2 rounded-lg text-xs text-fg-35 hover:text-red-400 transition-colors duration-150"
           >
             Sign out
           </a>

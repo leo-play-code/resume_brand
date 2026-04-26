@@ -6,6 +6,7 @@ import { Providers } from "@/components/providers/Providers";
 import { siteConfig } from "@/lib/config";
 import { getSiteSettings } from "@/lib/actions/settings";
 import NavigationProgress from "@/components/ui/NavigationProgress";
+import { isLightColor, buildCssVars } from "@/lib/utils/color";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +28,8 @@ export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const settings = await getSiteSettings();
+  const darkVars = buildCssVars(settings.backgroundDark, isLightColor(settings.backgroundDark));
+  const lightVars = buildCssVars(settings.backgroundLight, isLightColor(settings.backgroundLight));
   return (
     <html
       lang="en"
@@ -42,7 +45,7 @@ export default async function RootLayout({
         />
         <style
           dangerouslySetInnerHTML={{
-            __html: `:root { --background: ${settings.backgroundDark}; } [data-theme="light"] { --background: ${settings.backgroundLight}; }`,
+            __html: `:root { ${darkVars}; } [data-theme="light"] { ${lightVars}; }`,
           }}
         />
       </head>

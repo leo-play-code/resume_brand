@@ -16,8 +16,8 @@ export default async function TechAdminPage() {
     <div className="p-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-white">Tech Stack</h1>
-          <p className="text-white/35 text-sm mt-1">{items.length} items</p>
+          <h1 className="text-2xl font-bold text-fg">Tech Stack</h1>
+          <p className="text-fg-35 text-sm mt-1">{items.length} items</p>
         </div>
       </div>
 

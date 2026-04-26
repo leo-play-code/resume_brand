@@ -63,18 +63,18 @@ export default function ExperienceAdminClient({
     <div>
       <div className="space-y-3 mb-6">
         {items.length === 0 && (
-          <p className="text-white/30 text-sm py-6 text-center border border-dashed border-white/10 rounded-xl">
+          <p className="text-fg-35 text-sm py-6 text-center border border-dashed border-theme rounded-xl">
             No entries yet. Add your first one below.
           </p>
         )}
         {items.map((item) => (
           <div
             key={item.id}
-            className="flex items-center gap-4 px-4 py-3.5 rounded-xl border border-white/[0.07] bg-white/[0.02]"
+            className="flex items-center gap-4 px-4 py-3.5 rounded-xl border border-theme bg-surface"
           >
             <div className="flex-1 min-w-0">
-              <p className="text-white text-sm font-medium truncate">{item.role}</p>
-              <p className="text-white/35 text-xs">
+              <p className="text-fg text-sm font-medium truncate">{item.role}</p>
+              <p className="text-fg-35 text-xs">
                 {item.company} · {item.period}
               </p>
             </div>
@@ -91,7 +91,7 @@ export default function ExperienceAdminClient({
               onClick={() => handleDelete(item.id)}
               disabled={isPending}
               aria-label="Delete entry"
-              className="p-1.5 text-white/25 hover:text-red-400 transition-colors shrink-0"
+              className="p-1.5 text-fg-25 hover:text-red-400 transition-colors shrink-0"
             >
               <Trash2 size={15} />
             </button>
@@ -110,15 +110,15 @@ export default function ExperienceAdminClient({
       ) : (
         <form
           onSubmit={handleAdd}
-          className="border border-white/[0.08] bg-white/[0.02] rounded-2xl p-6 space-y-4"
+          className="border border-theme bg-surface rounded-2xl p-6 space-y-4"
         >
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-white font-medium">New Entry</h3>
+            <h3 className="text-fg font-medium">New Entry</h3>
             <button
               type="button"
               onClick={() => { setShowForm(false); setType("work"); }}
               aria-label="Close form"
-              className="text-white/30 hover:text-white"
+              className="text-fg-35 hover:text-fg"
             >
               <X size={18} />
             </button>
@@ -126,12 +126,12 @@ export default function ExperienceAdminClient({
 
           {/* Type selector */}
           <div>
-            <label className="block text-white/50 text-xs mb-1.5">Type</label>
+            <label className="block text-fg-50 text-xs mb-1.5">Type</label>
             <select
               name="type"
               value={type}
               onChange={(e) => setType(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-white/[0.08] bg-[#07070f] text-white text-sm focus:outline-none focus:border-purple-500/50"
+              className="w-full px-3 py-2 rounded-lg border border-theme bg-base text-fg text-sm focus:outline-none focus:border-purple-500/50"
             >
               <option value="work">Work</option>
               <option value="education">Education</option>
@@ -158,14 +158,14 @@ export default function ExperienceAdminClient({
 
           <Field label="Period (e.g. 2023.06 — Present) *" name="period" required />
           <div>
-            <label className="block text-white/50 text-xs mb-1.5">
+            <label className="block text-fg-50 text-xs mb-1.5">
               Description (one bullet point per line)
             </label>
             <textarea
               name="description"
               rows={4}
               placeholder={"Built X using Y\nImproved Z by 30%"}
-              className="w-full px-3 py-2 rounded-lg border border-white/[0.08] bg-white/[0.03] text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-purple-500/50 resize-none font-mono"
+              className="w-full px-3 py-2 rounded-lg border border-theme bg-surface text-fg text-sm placeholder:text-fg-20 focus:outline-none focus:border-purple-500/50 resize-none font-mono"
             />
           </div>
           <Field label="Display order (0 = first)" name="display_order" type="number" />
@@ -181,7 +181,7 @@ export default function ExperienceAdminClient({
             <button
               type="button"
               onClick={() => { setShowForm(false); setType("work"); }}
-              className="px-5 py-2 rounded-lg border border-white/10 text-white/50 hover:text-white text-sm transition-colors"
+              className="px-5 py-2 rounded-lg border border-theme text-fg-50 hover:text-fg text-sm transition-colors"
             >
               Cancel
             </button>
@@ -205,12 +205,12 @@ function Field({
 }) {
   return (
     <div>
-      <label className="block text-white/50 text-xs mb-1.5">{label}</label>
+      <label className="block text-fg-50 text-xs mb-1.5">{label}</label>
       <input
         type={type}
         name={name}
         required={required}
-        className="w-full px-3 py-2 rounded-lg border border-white/[0.08] bg-white/[0.03] text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-purple-500/50"
+        className="w-full px-3 py-2 rounded-lg border border-theme bg-surface text-fg text-sm placeholder:text-fg-20 focus:outline-none focus:border-purple-500/50"
       />
     </div>
   );

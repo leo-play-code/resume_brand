@@ -35,7 +35,7 @@ export default function SettingsAdminClient({ settings, updateSettings }: Props)
   }
 
   return (
-    <div className="border border-white/[0.08] bg-white/[0.02] rounded-2xl p-6">
+    <div className="border border-theme bg-surface rounded-2xl p-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
         {/* Dark Mode */}
         <ColorField
@@ -87,14 +87,14 @@ interface ColorFieldProps {
 function ColorField({ label, value, onChange }: ColorFieldProps) {
   return (
     <div className="space-y-3">
-      <p className="text-white/50 text-sm font-medium">{label}</p>
+      <p className="text-fg-50 text-sm font-medium">{label}</p>
       <div className="flex items-center gap-3">
         {/* Color picker */}
         <input
           type="color"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-10 h-10 rounded-lg border border-white/10 bg-transparent cursor-pointer"
+          className="w-10 h-10 rounded-lg border border-theme bg-transparent cursor-pointer"
           aria-label={`${label} color picker`}
         />
         {/* Hex input */}
@@ -111,12 +111,12 @@ function ColorField({ label, value, onChange }: ColorFieldProps) {
           }}
           maxLength={7}
           placeholder="#050510"
-          className="w-full px-3 py-2 rounded-lg border border-white/[0.08] bg-white/[0.03] text-white text-sm font-mono focus:outline-none focus:border-purple-500/50"
+          className="w-full px-3 py-2 rounded-lg border border-theme bg-surface text-fg text-sm font-mono focus:outline-none focus:border-purple-500/50"
           aria-label={`${label} hex value`}
         />
         {/* Preview swatch */}
         <div
-          className="w-10 h-10 rounded-lg border border-white/10 shrink-0"
+          className="w-10 h-10 rounded-lg border border-theme shrink-0"
           style={{ backgroundColor: value }}
           aria-hidden="true"
         />
