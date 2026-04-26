@@ -132,7 +132,33 @@ Migration name: `add_site_settings`
 
 ## Task Status
 
+---
+
+## Modified Models (Round 3)
+
+### Project — 新增欄位
+```prisma
+// 在現有 Project model 加入：
+heroType   String  @default("mp4") @map("hero_type")
+// "mp4" = 現有 videoUrl 邏輯不變
+// "js-demo" = heroJsCode 儲存元件程式碼，由 /api/demo/[id] iframe 渲染
+
+heroJsCode String? @map("hero_js_code")
+// 只在 heroType === "js-demo" 時有值
+// 儲存完整的 React 元件程式碼（如 MorphDemo）
+```
+
+Migration name: `add_hero_js_to_project`
+
+---
+
+## Task Status
+
 ### Pending
+- [x] Add `heroType` (String, default "mp4") + `heroJsCode` (String?) to Project model in `prisma/schema.prisma`
+- [x] Create migration `add_hero_js_to_project`
+
+### Done (previously marked)
 - [x] Add `SiteSettings` model to `prisma/schema.prisma`
 - [x] Create migration `add_site_settings`
 - [x] Seed `SiteSettings` singleton record in `prisma/seed.ts`

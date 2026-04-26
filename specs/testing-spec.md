@@ -121,6 +121,8 @@
 - [ ] [Regression] Prisma Client stale after migration — 確認新增 model 後 `npx prisma generate` 已執行，`prisma.siteSettings.findUnique` 不再拋出 undefined error
 
 ### Done
+- [x] `demo-template.test.ts` — `buildDemoHtml(code)` 回傳字串包含 <!DOCTYPE html>、react esm.sh CDN、framer-motion、lucide-react、`<div id="root">`；包含傳入的 code；backtick 和 ${} sanitization 不 crash (10 cases; completed: 2026-04-26)
+- [x] `GET /api/demo/[projectId]` — heroType==="js-demo" 回傳 200 text/html；heroType==="mp4" 回傳 404；heroJsCode===null 回傳 404；projectId 不存在回傳 404；200 Content-Type 含 text/html (5 cases; completed: 2026-04-26)
 - [x] `LoadingSpinner.test.tsx` — unit tests (5 cases; completed: 2026-04-26)
 - [x] `NavigationProgress.test.tsx` — unit tests (3 cases; completed: 2026-04-26)
 - [x] `SettingsAdminClient.test.tsx` — unit tests (5 cases; completed: 2026-04-26)

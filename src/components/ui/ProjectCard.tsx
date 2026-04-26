@@ -19,12 +19,20 @@ export default function ProjectCard({ project }: { project: Project }) {
   return (
     <article
       className="group relative rounded-2xl border border-theme bg-surface overflow-hidden hover:border-purple-500/30 hover:-translate-y-1.5 transition-all duration-500 hover:glow-card"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={project.heroType === "js-demo" ? undefined : handleMouseEnter}
+      onMouseLeave={project.heroType === "js-demo" ? undefined : handleMouseLeave}
     >
       {/* ── Media ──────────────────────────────────── */}
       <div className="relative aspect-video bg-surface-2 overflow-hidden">
-        {project.videoUrl ? (
+        {project.heroType === "js-demo" ? (
+          <iframe
+            src={`/api/demo/${project.id}`}
+            className="w-full h-full border-0"
+            title={`${project.name} demo`}
+            allow="scripts"
+            loading="lazy"
+          />
+        ) : project.videoUrl ? (
           <video
             ref={videoRef}
             src={project.videoUrl}

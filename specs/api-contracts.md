@@ -123,19 +123,59 @@ Business logic:
 
 ---
 
+---
+
+## New Endpoints (Round 3)
+
+### GET /api/demo/[projectId]
+將 DB 中儲存的 JS 元件程式碼包裝成完整 HTML，供 ProjectCard `<iframe>` 嵌入。
+
+```
+GET /api/demo/[projectId]
+
+Auth: public
+Response: text/html
+
+Business logic:
+1. prisma.project.findUnique({ where: { id: projectId } })
+2. 若 heroType !== "js-demo" 或 heroJsCode 為空 → 回傳 404
+3. 將 heroJsCode 嵌入 HTML template：
+   - importmap: react, react-dom/client, framer-motion, lucide-react → esm.sh CDN
+   - <div id="root" />
+   - <script type="module">：動態偵測 default export，用 ReactDOM.createRoot 渲染
+4. 回傳 200 Content-Type: text/html，Cache-Control: public, max-age=60
+
+HTML template 注意事項：
+- body background: transparent（配合 ProjectCard 主題）
+- overflow: hidden（配合 aspect-video 容器）
+- 包含 CSP meta 允許 esm.sh
+```
+
+---
+
+## Modified Actions (Round 3)
+
+### addProject（修改）
+在 `src/lib/actions/projects.ts` 的 `addProject` function 加入：
+- `formData.get('hero_type')` → 存入 `heroType`（預設 "mp4"）
+- `formData.get('hero_js_code')` → 存入 `heroJsCode`（可 null）
+
 ## No Changes to Existing Actions
 
 - `addExperience` / `deleteExperience` — 不需改 (UI 層 picker 組好資料後仍走 FormData)
 - `addTechItem` / `deleteTechItem` — 不需改
-- `addProject` / `deleteProject` — 不需改
 
 ---
 
 ## Task Status
 
 ### Pending
+_(none)_
 
 ### Done
 - [x] Create `src/app/api/skills/route.ts` — GET handler with search + category filter
 - [x] Create `src/lib/actions/skills.ts` — `addSkill`, `deleteSkill` server actions
 - [x] Create `src/lib/actions/settings.ts` — `getSiteSettings`, `updateSiteSettings`
+- [x] 新建 `src/app/api/demo/[projectId]/route.ts` — GET → 回傳 HTML with embedded JS component
+- [x] 修改 `src/lib/actions/projects.ts` → `addProject` 加入 heroType + heroJsCode 欄位
+- [x] 新建 `src/lib/demo-template.ts` — buildDemoHtml() Blob URL approach

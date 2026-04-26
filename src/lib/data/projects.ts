@@ -11,6 +11,8 @@ export interface Project {
   liveUrl?: string;
   techStack: string[];
   featured: boolean;
+  heroType?: string;
+  heroJsCode?: string | null;
 }
 
 export const projects: Project[] = [

@@ -30,8 +30,11 @@
 - **[PERF] Loading States** — `loading.tsx` 骨架屏 + NavigationProgress 頂部進度條
 - **[PERF] Mutation feedback 優化** — Admin 表單 isPending 時顯示 LoadingSpinner
 
-### 🟡 進行中 / Pending（Round 4）
-- **[THEME] Adaptive Text Color** — 根據背景亮度自動計算前景色（foreground / fg-* / surface / border），注入完整 CSS vars；Admin 全站改用語意色彩類（`text-fg`、`bg-surface`），背景變淺時文字自動變深
+### ✅ 已完成（Round 4）
+- **[THEME] Adaptive Text Color** — `buildCssVars()` 根據背景亮度自動計算 16 個 CSS vars；Admin 全站改用 `text-fg`/`bg-surface`
+
+### 🟡 進行中 / Pending（Round 5）
+- **[MEDIA] JS Demo Hero** — Project 支援 heroType: "mp4" | "js-demo"，Admin 可貼入 React 元件程式碼，前台以 sandboxed `<iframe>` + `/api/demo/[id]` 渲染（自動載入 framer-motion / lucide-react CDN）
 
 ## Spec Files
 - [specs/data-models.md](specs/data-models.md)

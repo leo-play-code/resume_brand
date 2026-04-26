@@ -289,6 +289,11 @@ src/
 
 ## Task Status
 
+### Done (Feature 9 — JS Demo Hero)
+- [x] 修改 `src/app/admin/projects/ProjectsAdminClient.tsx` — 加入 heroType toggle (mp4/js-demo) + heroJsCode 程式碼 textarea
+- [x] 修改 `src/components/ui/ProjectCard.tsx` — media 區塊：heroType==="js-demo" 時渲染 `<iframe src="/api/demo/[id]" />`
+- [ ] 新建 `src/lib/demo-template.ts` — `buildDemoHtml(jsCode: string): string` 工具函式（輸出完整 HTML with importmap + CDN）
+
 ### Done (Feature 8 — Adaptive Theme Colors)
 - [x] 新建 `src/lib/utils/color.ts` — `isLightColor(hex)` + `buildCssVars(bg, isLight)` 工具函式
 - [x] 修改 `src/app/layout.tsx` — 用 `buildCssVars` 注入完整 CSS vars（包含 `--foreground`、`--fg-*`、`--surface`、`--border`）

@@ -30,6 +30,8 @@ async function getData() {
             liveUrl: p.liveUrl ?? undefined,
             techStack: p.techStack,
             featured: p.featured,
+            heroType: p.heroType,
+            heroJsCode: p.heroJsCode ?? null,
           }))
         : staticProjects;
 

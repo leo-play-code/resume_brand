@@ -6,6 +6,8 @@ import { Trash2, Plus, X } from "lucide-react";
 import SkillPicker from "@/components/ui/SkillPicker";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
+type HeroType = "mp4" | "js-demo";
+
 interface Props {
   projects: Project[];
   addProject: (formData: FormData) => Promise<void>;
@@ -19,6 +21,7 @@ export default function ProjectsAdminClient({
 }: Props) {
   const [showForm, setShowForm] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const [heroType, setHeroType] = useState<HeroType>("mp4");
 
   function handleDelete(id: string) {
     if (!confirm("Delete this project?")) return;
@@ -29,6 +32,7 @@ export default function ProjectsAdminClient({
     startTransition(async () => {
       await addProject(formData);
       setShowForm(false);
+      setHeroType("mp4");
     });
   }
 
@@ -82,7 +86,7 @@ export default function ProjectsAdminClient({
             <h3 className="text-fg font-medium">New Project</h3>
             <button
               type="button"
-              onClick={() => setShowForm(false)}
+              onClick={() => { setShowForm(false); setHeroType("mp4"); }}
               className="text-fg-35 hover:text-fg"
             >
               <X size={18} />
@@ -92,7 +96,48 @@ export default function ProjectsAdminClient({
           <Field label="Name *" name="name" required />
           <Field label="Short description (tagline) *" name="description" required />
           <Field label="Long description (2-3 sentences)" name="long_description" type="textarea" />
-          <Field label="Video URL (e.g. /videos/demo.mp4)" name="video_url" />
+          {/* Hero Type selector */}
+          <input type="hidden" name="hero_type" value={heroType} />
+          <div>
+            <label className="block text-fg-50 text-xs mb-1.5">Hero Type</label>
+            <div className="flex gap-2">
+              {(["mp4", "js-demo"] as const).map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  onClick={() => setHeroType(t)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-mono border transition-colors ${
+                    heroType === t
+                      ? "bg-purple-600 border-purple-500 text-white"
+                      : "border-theme bg-surface text-fg-50 hover:text-fg"
+                  }`}
+                >
+                  {t === "mp4" ? "🎥 MP4 Video" : "⚡ JS Component"}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Conditional hero content field */}
+          {heroType === "mp4" ? (
+            <Field label="Video URL (e.g. /videos/demo.mp4)" name="video_url" />
+          ) : (
+            <div>
+              <label className="block text-fg-50 text-xs mb-1.5">
+                JS Component Code
+                <span className="text-fg-25 ml-1 font-mono">(ESM, must have export default)</span>
+              </label>
+              <textarea
+                name="hero_js_code"
+                rows={10}
+                placeholder={`import React from 'react';\n\nexport default function MyComponent() {\n  return <div>Hello</div>;\n}`}
+                className="w-full px-3 py-2 rounded-lg border border-theme bg-surface text-fg text-xs placeholder:text-fg-25 focus:outline-none focus:border-purple-500/50 resize-y font-mono"
+              />
+              <p className="text-fg-25 text-xs mt-1 font-mono">
+                Imports: react, framer-motion, lucide-react 均透過 CDN 自動載入
+              </p>
+            </div>
+          )}
           <Field label="GitHub URL" name="github_url" type="url" />
           <Field label="Live URL" name="live_url" type="url" />
           <div>
@@ -118,7 +163,7 @@ export default function ProjectsAdminClient({
             </button>
             <button
               type="button"
-              onClick={() => setShowForm(false)}
+              onClick={() => { setShowForm(false); setHeroType("mp4"); }}
               className="px-5 py-2 rounded-lg border border-theme text-fg-50 hover:text-fg text-sm transition-colors"
             >
               Cancel

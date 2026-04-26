@@ -14,6 +14,8 @@ model Project {
   description     String   @default("")
   longDescription String   @default("") @map("long_description")
   videoUrl        String   @default("") @map("video_url")
+  heroType        String   @default("mp4") @map("hero_type")
+  heroJsCode      String?  @map("hero_js_code")
   githubUrl       String?  @map("github_url")
   liveUrl         String?  @map("live_url")
   techStack       String[] @map("tech_stack")
