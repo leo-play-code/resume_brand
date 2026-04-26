@@ -106,9 +106,36 @@ Changes:
 
 ---
 
+---
+
+## New Models (Round 2)
+
+### SiteSettings
+單例設定表（id 固定為 "singleton"）。儲存可由 Admin 自訂的全站外觀設定。
+
+```prisma
+model SiteSettings {
+  id              String   @id @default("singleton")
+  backgroundDark  String   @default("#050510") @map("background_dark")
+  backgroundLight String   @default("#f4f1ff") @map("background_light")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("site_settings")
+}
+```
+
+初始 Seed: 建立一筆 id="singleton" 的預設記錄。
+
+Migration name: `add_site_settings`
+
+---
+
 ## Task Status
 
 ### Pending
+- [x] Add `SiteSettings` model to `prisma/schema.prisma`
+- [x] Create migration `add_site_settings`
+- [x] Seed `SiteSettings` singleton record in `prisma/seed.ts`
 
 ### Done
 - [x] Add `Skill` model to `prisma/schema.prisma`

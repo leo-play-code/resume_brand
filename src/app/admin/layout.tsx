@@ -8,6 +8,7 @@ const NAV = [
   { href: "/admin/projects", label: "Projects" },
   { href: "/admin/tech", label: "Tech Stack" },
   { href: "/admin/experience", label: "Experience" },
+  { href: "/admin/settings", label: "Settings" },
 ];
 
 export default async function AdminLayout({
@@ -19,10 +20,10 @@ export default async function AdminLayout({
   if (!session) redirect("/admin/login");
 
   return (
-    <div className="min-h-screen bg-[#07070f] text-white">
+    <div className="min-h-screen bg-base text-white">
       {/* Sidebar */}
-      <aside className="fixed top-0 left-0 h-full w-56 border-r border-white/[0.06] bg-[#050510] flex flex-col">
-        <div className="px-6 py-5 border-b border-white/[0.06]">
+      <aside className="fixed top-0 left-0 h-full w-56 border-r border-theme bg-base flex flex-col">
+        <div className="px-6 py-5 border-b border-theme">
           <Link href="/" className="text-sm font-mono gradient-text font-bold">
             ← Portfolio
           </Link>
@@ -43,7 +44,7 @@ export default async function AdminLayout({
           ))}
         </nav>
 
-        <div className="px-3 py-4 border-t border-white/[0.06]">
+        <div className="px-3 py-4 border-t border-theme">
           <a
             href="/api/auth/signout"
             className="block px-3 py-2 rounded-lg text-xs text-white/30 hover:text-red-400 transition-colors duration-150"

@@ -167,9 +167,143 @@ src/
 
 ---
 
+---
+
+## Feature 5: Admin 背景色與前台同步（Fix）
+
+**修改**: `src/app/admin/layout.tsx`
+
+Admin layout 目前硬編碼 `bg-[#07070f]`，與前台 `--background: #050510` 不一致。
+改為使用 `bg-base` (`background: var(--background)`) 讓兩者共用同一個 CSS 變數。
+
+同時 sidebar 的 `bg-[#050510]` 也改為 `bg-base`，border 統一改用 `border-theme`。
+
+---
+
+## Feature 6: 全站背景色設定（Admin Settings 頁）
+
+### 新建 `src/app/admin/settings/page.tsx`
+Admin 側欄加入 "Settings" 連結。Settings 頁面包含：
+- 背景色區塊：Dark 模式背景色 + Light 模式背景色，各有一個 `<input type="color">` + hex 文字輸入框
+- 儲存後呼叫 `updateSiteSettings` action
+- 儲存成功顯示 toast/成功訊息
+
+### 新建 `src/app/admin/settings/SettingsAdminClient.tsx`
+Client component，Props:
+```ts
+interface Props {
+  settings: { backgroundDark: string; backgroundLight: string }
+  updateSettings: (formData: FormData) => Promise<void>
+}
+```
+- 兩個顏色欄位：color picker + hex input 雙向同步
+- `useTransition` 處理儲存 loading
+- 儲存成功後顯示 "✓ Saved" feedback（2 秒後消失）
+
+### 修改 `src/app/layout.tsx`
+從 DB 讀取 `SiteSettings`，將 `backgroundDark` / `backgroundLight` 注入為 inline CSS 覆蓋 `:root` 變數：
+```tsx
+// 在 <html> 上加 style prop
+style={{
+  '--background': settings.backgroundDark,  // 或根據 theme 選擇
+} as React.CSSProperties}
+```
+實際上需要同時設定 dark 和 light 的值，可以在 `<head>` 裡注入一段 `<style>` 標籤：
+```html
+<style>{`:root { --background: ${settings.backgroundDark}; } [data-theme="light"] { --background: ${settings.backgroundLight}; }`}</style>
+```
+
+### 修改 `src/app/admin/layout.tsx`
+在 NAV 陣列加入 Settings 連結：
+```ts
+{ href: "/admin/settings", label: "Settings" }
+```
+
+---
+
+## Feature 7: Loading States（骨架屏 + 導航進度）
+
+### 新建 `src/components/ui/LoadingSpinner.tsx`
+通用 loading spinner 元件，可傳入 size prop（sm / md / lg）。
+Deep glass 風格，使用 CSS `border` 旋轉動畫，紫色 accent。
+
+### 新建 `src/components/ui/NavigationProgress.tsx`
+頁面路由切換時顯示頂部進度條（NProgress 風格）。
+- `"use client"` 元件
+- 使用 `usePathname()` + `useEffect` 偵測路由變化
+- 路由開始切換 → 顯示頂部紫色進度條，0% → 80%（緩慢）
+- 路由完成 → 快速到 100% 後淡出
+- 加入 `src/app/layout.tsx` 的 `<Providers>` 內部
+
+### loading.tsx 檔案（Next.js App Router Suspense）
+
+**`src/app/loading.tsx`** — 首頁 loading skeleton  
+顯示一個全螢幕佔位動畫（pulse skeleton）。
+
+**`src/app/admin/loading.tsx`** — Admin 通用 loading  
+```tsx
+// 顯示 sidebar skeleton + content skeleton
+// LoadingSpinner 置中
+```
+
+**`src/app/admin/projects/loading.tsx`** — Projects 頁面 loading  
+**`src/app/admin/tech/loading.tsx`** — Tech 頁面 loading  
+**`src/app/admin/experience/loading.tsx`** — Experience 頁面 loading  
+**`src/app/admin/settings/loading.tsx`** — Settings 頁面 loading
+
+每個 admin loading.tsx 顯示統一的 skeleton card 列表（3 個虛線 placeholder cards）。
+
+### 優化現有 Admin mutation feedback
+確認所有 admin client 的 `isPending` 狀態下，Submit 按鈕顯示 spinner icon 而非只是文字 "Saving…"。
+修改：`ExperienceAdminClient`, `TechAdminClient`, `ProjectsAdminClient`，在 isPending 時 button 加上 `<LoadingSpinner size="sm" />` + 文字。
+
+---
+
+## File Structure（新增）
+
+```
+src/
+  app/
+    loading.tsx                        ← 新建
+    admin/
+      loading.tsx                      ← 新建
+      settings/
+        page.tsx                       ← 新建
+        SettingsAdminClient.tsx        ← 新建
+        loading.tsx                    ← 新建
+      projects/loading.tsx             ← 新建
+      tech/loading.tsx                 ← 新建
+      experience/loading.tsx           ← 新建
+      layout.tsx                       ← 修改（顏色 + Settings nav link）
+    layout.tsx                         ← 修改（注入 DB 背景色）
+  components/
+    ui/
+      LoadingSpinner.tsx               ← 新建
+      NavigationProgress.tsx           ← 新建
+  lib/
+    actions/
+      settings.ts                      ← 新建
+```
+
+---
+
 ## Task Status
 
 ### Pending
+
+### Done (Feature 5–7)
+- [x] 修改 `src/app/admin/layout.tsx` — 硬編碼色改用 `bg-base` / `border-theme`，加 Settings nav
+- [x] 新建 `src/app/admin/settings/page.tsx` + `SettingsAdminClient.tsx`
+- [x] 修改 `src/app/layout.tsx` — 讀 DB SiteSettings，注入背景色為 CSS var
+- [x] 新建 `src/components/ui/LoadingSpinner.tsx`
+- [x] 新建 `src/components/ui/NavigationProgress.tsx`，加入 `layout.tsx`
+- [x] 新建 `src/app/loading.tsx`
+- [x] 新建 `src/app/admin/loading.tsx`
+- [x] 新建 `src/app/admin/projects/loading.tsx`
+- [x] 新建 `src/app/admin/tech/loading.tsx`
+- [x] 新建 `src/app/admin/experience/loading.tsx`
+- [x] 新建 `src/app/admin/settings/loading.tsx`
+- [x] 優化 mutation feedback — 三個 Admin client 的 isPending button 加 LoadingSpinner
 
 ### Done
 - [x] `src/app/globals.css` — 加入 cursor:pointer 全域規則

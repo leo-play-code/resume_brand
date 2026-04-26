@@ -117,11 +117,17 @@
 ## Task Status
 
 ### Pending
+- [ ] [Integration] Admin layout 背景色與前台 `--background` CSS var 一致
 
 ### Done
+- [x] `LoadingSpinner.test.tsx` — unit tests (5 cases; completed: 2026-04-26)
+- [x] `NavigationProgress.test.tsx` — unit tests (3 cases; completed: 2026-04-26)
+- [x] `SettingsAdminClient.test.tsx` — unit tests (5 cases; completed: 2026-04-26)
 - [x] `ComboboxSelect.test.tsx` — unit tests (11 cases; completed: 2026-04-26)
 - [x] `UniversityPicker.test.tsx` — unit tests (8 cases; completed: 2026-04-26)
 - [x] `SkillPicker.test.tsx` — unit tests (8 cases; completed: 2026-04-26)
 - [x] `api/skills/route.test.ts` — integration tests (5 cases; completed: 2026-04-26)
 - [x] `actions/skills.test.ts` — integration tests (8 cases; completed: 2026-04-26)
 - [x] `ExperienceAdminClient.test.tsx` — integration tests (8 cases; completed: 2026-04-26)
+- [x] `actions/settings.test.ts` — integration tests (5 cases: getSiteSettings DB record, getSiteSettings null→defaults, updateSiteSettings valid hex, updateSiteSettings invalid hex, updateSiteSettings no session; completed: 2026-04-26)
+- [x] `app/__tests__/layout.test.tsx` — [Regression] HTML theme hydration mismatch — Manual verification only; `suppressHydrationWarning` added to `<html>` in layout.tsx + inline script restores `data-theme`; full test requires browser/Playwright (completed: 2026-04-26)

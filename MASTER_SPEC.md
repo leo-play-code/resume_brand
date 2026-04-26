@@ -17,12 +17,18 @@
 - Admin 後台：Projects CRUD, TechStack CRUD, Experience CRUD
 - NextAuth 登入保護 Admin
 
-### 🟡 進行中 / Pending
+### ✅ 已完成（Round 2）
 - **[UX] Cursor pointer on hover** — 所有可點擊元素 hover 時顯示 cursor:pointer
-- **[DATA] 台灣大學 + 系所 Picker** — 提供全台大學（中英文）、系所、學歷層級的可選清單（靜態資料）
-- **[DATA] 技能庫 + 自訂補充** — 內建全領域技能預設清單（DB 儲存，支援使用者新增自訂技能）
-- **[UI] ExperienceAdmin 學歷 Picker** — type=education 時改用大學/系所 combobox
-- **[UI] SkillPicker Component** — TechAdmin 和 ProjectAdmin 使用可搜尋技能選擇器
+- **[DATA] 台灣大學 + 系所 Picker** — 全台大學（中英文）、系所、學歷層級靜態清單
+- **[DATA] 技能庫 + 自訂補充** — 140 筆預設技能（DB）+ 使用者自訂新增
+- **[UI] ExperienceAdmin 學歷 Picker** — education 切換 UniversityPicker
+- **[UI] SkillPicker Component** — TechAdmin + ProjectAdmin 可搜尋技能選擇器
+
+### 🟡 進行中 / Pending（Round 3）
+- **[SETTINGS] 全站背景色管理** — Admin Settings 頁面可自訂 Dark/Light 背景色，存 DB，注入前台 CSS var
+- **[UX] Admin 背景色同步** — Admin layout 改用 `var(--background)` 與前台一致
+- **[PERF] Loading States** — `loading.tsx` 骨架屏 + NavigationProgress 頂部進度條
+- **[PERF] Mutation feedback 優化** — Admin 表單 isPending 時顯示 LoadingSpinner
 
 ## Spec Files
 - [specs/data-models.md](specs/data-models.md)

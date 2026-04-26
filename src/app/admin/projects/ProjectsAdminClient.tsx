@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import type { Project } from "@prisma/client";
 import { Trash2, Plus, X } from "lucide-react";
 import SkillPicker from "@/components/ui/SkillPicker";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 interface Props {
   projects: Project[];
@@ -111,9 +112,9 @@ export default function ProjectsAdminClient({
             <button
               type="submit"
               disabled={isPending}
-              className="px-5 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-sm font-medium transition-colors disabled:opacity-50"
+              className="flex items-center justify-center gap-2 px-5 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-sm font-medium transition-colors disabled:opacity-50"
             >
-              {isPending ? "Saving…" : "Save Project"}
+              {isPending ? <><LoadingSpinner size="sm" /><span>Saving…</span></> : "Save Project"}
             </button>
             <button
               type="button"

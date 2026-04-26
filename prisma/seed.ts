@@ -186,6 +186,19 @@ async function main() {
   });
 
   console.log(`Seeded ${created.count} skills successfully`);
+
+  // Upsert site settings singleton
+  await prisma.siteSettings.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      backgroundDark: "#050510",
+      backgroundLight: "#f4f1ff",
+    },
+  });
+
+  console.log("Seeded SiteSettings singleton");
 }
 
 main()

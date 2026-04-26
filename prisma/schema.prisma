@@ -59,3 +59,12 @@ model Skill {
   @@index([isActive])
   @@map("skills")
 }
+
+model SiteSettings {
+  id              String   @id @default("singleton")
+  backgroundDark  String   @default("#050510") @map("background_dark")
+  backgroundLight String   @default("#f4f1ff") @map("background_light")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("site_settings")
+}

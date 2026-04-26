@@ -86,6 +86,43 @@ Business logic:
 
 ---
 
+---
+
+## New Actions (Round 2)
+
+### Server Action: getSiteSettings
+讀取全站設定（供 layout.tsx server side 呼叫）。
+
+```
+Action: src/lib/actions/settings.ts → getSiteSettings()
+
+Auth: public (read-only, called by server component)
+Returns: SiteSettings object
+Business logic:
+- prisma.siteSettings.findUnique({ where: { id: "singleton" } })
+- 若不存在 → return default values { backgroundDark: "#050510", backgroundLight: "#f4f1ff" }
+```
+
+### Server Action: updateSiteSettings
+管理員更新全站外觀設定。
+
+```
+Action: src/lib/actions/settings.ts → updateSiteSettings(formData: FormData)
+
+Auth: Admin only
+FormData fields:
+  backgroundDark:  string — hex color, e.g. "#050510"
+  backgroundLight: string — hex color, e.g. "#f4f1ff"
+
+Business logic:
+- Validate both are valid hex colors (#rrggbb format)
+- prisma.siteSettings.upsert({ where: { id: "singleton" }, ... })
+- revalidatePath('/') and revalidatePath('/admin/settings')
+- return { success: true }
+```
+
+---
+
 ## No Changes to Existing Actions
 
 - `addExperience` / `deleteExperience` — 不需改 (UI 層 picker 組好資料後仍走 FormData)
@@ -101,3 +138,4 @@ Business logic:
 ### Done
 - [x] Create `src/app/api/skills/route.ts` — GET handler with search + category filter
 - [x] Create `src/lib/actions/skills.ts` — `addSkill`, `deleteSkill` server actions
+- [x] Create `src/lib/actions/settings.ts` — `getSiteSettings`, `updateSiteSettings`
