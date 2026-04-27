@@ -21,14 +21,18 @@
       "Bash(npm list *)",
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(list\\(d.get\\('exports',{}\\).keys\\(\\)\\), indent=2\\)\\)\")",
       "Bash(gh api *)",
-      "Edit(/.claude/skills/frontend-design/**)"
+      "Edit(/.claude/skills/frontend-design/**)",
+      "Read(//c/Users/User/.claude/**)",
+      "Bash(grep -rn \"^\\\\- \\\\`\\\\.claude/skills\\\\|^讀取 \\\\`\\\\.claude/skills\\\\| \\\\.claude/skills\" \"C:/Users/User/.claude/commands/\")"
     ],
     "additionalDirectories": [
       "c:\\Users\\User\\Desktop\\github\\AI_startup\\job_pilot\\src\\app\\[locale]\\admin\\templates",
       "C:\\Users\\User\\Desktop\\github\\AI_startup\\job_pilot\\src\\app\\[locale]\\admin\\templates",
       "c:\\Users\\User\\Desktop\\github\\AI_startup\\job_pilot\\src\\app\\api\\resume\\[id]",
       "c:\\Users\\User\\Desktop\\github\\AI_startup\\resume_brand\\src\\app\\api\\demo",
-      "c:\\Users\\User\\Desktop\\github\\AI_startup\\resume_brand\\src\\app"
+      "c:\\Users\\User\\Desktop\\github\\AI_startup\\resume_brand\\src\\app",
+      "C:\\Users\\User\\.claude",
+      "C:\\Users\\User\\.claude\\commands"
     ]
   }
 }
