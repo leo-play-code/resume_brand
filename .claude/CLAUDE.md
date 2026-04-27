@@ -27,7 +27,8 @@
 | 加新功能、需求分析 | `.claude/skills/feature-spec/SKILL.md` |
 | 資料庫、schema、migration | `.claude/skills/database-dev/SKILL.md` |
 | 後端 API、route handler | `.claude/skills/backend-dev/SKILL.md` |
-| 前端、UI、component | `.claude/skills/frontend-dev/SKILL.md` |
+| 前端、UI、component（技術規範） | `.claude/skills/frontend-dev/SKILL.md` |
+| 前端、UI、component（視覺設計） | `.claude/skills/frontend-design/SKILL.md` |
 | Bug、error、壞掉 | `.claude/skills/debug-triage/SKILL.md` |
 | Commit、push、release | `.claude/skills/git-workflow/SKILL.md` |
 | 單元/整合/E2E 測試 | `.claude/skills/testing-dev/SKILL.md` |

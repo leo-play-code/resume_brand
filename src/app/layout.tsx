@@ -22,6 +22,10 @@ export const metadata: Metadata = {
   title: `${siteConfig.ownerName} — Full Stack Engineer`,
   description: siteConfig.metaDescription,
   metadataBase: new URL(siteConfig.siteUrl),
+  icons: {
+    icon: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export default async function RootLayout({
