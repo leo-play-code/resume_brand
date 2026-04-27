@@ -136,6 +136,10 @@
 - [x] [i18n] Experience EN fallback — experience 無 roleEn → locale=en 時顯示中文 role；covered by i18n-fallback.test.ts resolveExperienceRole() + resolveExperienceDescription() (9 cases) (completed: 2026-04-27)
 - [ ] [Feature] Edit Project — 確認後台 Pencil 按鈕展開 inline 編輯表單，欄位預填正確，送出後資料更新，表單收合
 
+### Done (Feature 13 — Marquee Speed & Auto-Fill)
+- [x] [Unit] TechMarquee fill — items.length=2 → copies≥20, items.length=10 → copies≥6, items.length=30 → copies≥4; all copies values are even (completed: 2026-04-27)
+- [x] [Visual] Marquee speed — `--animate-marquee-left` 14s / `--animate-marquee-right` 17s (verified in globals.css; completed: 2026-04-27)
+
 ### Done
 - [x] `demo-template.test.ts` — `buildDemoHtml(code)` 回傳字串包含 <!DOCTYPE html>、react esm.sh CDN、framer-motion、lucide-react、`<div id="root">`；包含傳入的 code；backtick 和 ${} sanitization 不 crash (10 cases; completed: 2026-04-26)
 - [x] `GET /api/demo/[projectId]` — heroType==="js-demo" 回傳 200 text/html；heroType==="mp4" 回傳 404；heroJsCode===null 回傳 404；projectId 不存在回傳 404；200 Content-Type 含 text/html (5 cases; completed: 2026-04-26)

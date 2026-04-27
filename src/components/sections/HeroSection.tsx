@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { useTranslations } from "next-intl";
-import { siteConfig } from "@/lib/config";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,6 +18,7 @@ export default function HeroSection() {
   const headingRef  = useRef<HTMLDivElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const ctaRef      = useRef<HTMLDivElement>(null);
+  const avatarRef   = useRef<HTMLDivElement>(null);
 
   const [roleIndex, setRoleIndex]   = useState(0);
   const [displayed, setDisplayed]   = useState("");
@@ -51,7 +52,8 @@ export default function HeroSection() {
   useGSAP(
     () => {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      tl.fromTo(headingRef.current,  { y: 70, opacity: 0 }, { y: 0, opacity: 1, duration: 1.1 })
+      tl.fromTo(avatarRef.current,   { scale: 0.85, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.0 })
+        .fromTo(headingRef.current,  { y: 70, opacity: 0 }, { y: 0, opacity: 1, duration: 1.1 }, "-=0.8")
         .fromTo(subtitleRef.current, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9 }, "-=0.65")
         .fromTo(ctaRef.current,      { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, "-=0.55");
 
@@ -70,7 +72,7 @@ export default function HeroSection() {
     <section
       ref={sectionRef}
       id="about"
-      className="relative min-h-screen flex flex-col items-center justify-center px-6 text-center overflow-hidden"
+      className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden"
     >
       {/* Radial purple glow */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(139,92,246,0.18),transparent)]" />
@@ -87,45 +89,73 @@ export default function HeroSection() {
       {/* Bottom fade */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-linear-to-t from-background to-transparent" />
 
-      <div ref={contentRef} className="relative z-10 max-w-4xl mx-auto">
-        <p className="text-purple-400 text-xs font-mono tracking-[0.3em] uppercase mb-8">
-          {t("greeting")}
-        </p>
+      <div ref={contentRef} className="relative z-10 w-full max-w-5xl mx-auto">
+        <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-10 md:gap-16">
 
-        <div ref={headingRef}>
-          <h1 className="text-6xl sm:text-7xl md:text-8xl font-bold tracking-tight mb-6 leading-none">
-            <span className="gradient-text">{siteConfig.ownerName}</span>
-          </h1>
+          {/* ── Left: text ── */}
+          <div className="flex-1 text-center md:text-left">
+            <p className="text-purple-400 text-xs font-mono tracking-[0.3em] uppercase mb-6">
+              {t("greeting")}
+            </p>
 
-          <div className="text-xl md:text-2xl text-fg-60 font-light mb-10 h-9 flex items-center justify-center gap-1">
-            <span>{displayed}</span>
-            <span className="w-0.5 h-6 bg-purple-400 animate-cursor-blink inline-block" />
+            <div ref={headingRef}>
+              <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight mb-5 leading-none">
+                <span className="gradient-text">{t("name")}</span>
+              </h1>
+
+              <div className="text-lg md:text-xl text-fg-60 font-light mb-8 h-8 flex items-center md:justify-start justify-center gap-1">
+                <span>{displayed}</span>
+                <span className="w-0.5 h-5 bg-purple-400 animate-cursor-blink inline-block" />
+              </div>
+            </div>
+
+            <p
+              ref={subtitleRef}
+              className="text-fg-40 text-base md:text-lg max-w-lg mx-auto md:mx-0 mb-10 leading-relaxed"
+            >
+              {t("tagline")}
+            </p>
+
+            <div
+              ref={ctaRef}
+              className="flex flex-col sm:flex-row items-center md:items-start justify-center md:justify-start gap-4"
+            >
+              <a
+                href="#projects"
+                className="px-8 py-3.5 rounded-full bg-purple-600 hover:bg-purple-500 text-white font-medium text-sm transition-all duration-300 hover:shadow-[0_0_35px_rgba(139,92,246,0.55)] w-full sm:w-auto text-center"
+              >
+                {t("cta_projects")}
+              </a>
+              <a
+                href="#contact"
+                className="px-8 py-3.5 rounded-full border border-theme text-fg-60 hover:text-fg hover:border-purple-500/40 transition-all duration-300 text-sm w-full sm:w-auto text-center"
+              >
+                {t("cta_contact")}
+              </a>
+            </div>
           </div>
-        </div>
 
-        <p
-          ref={subtitleRef}
-          className="text-fg-40 text-base md:text-lg max-w-xl mx-auto mb-14 leading-relaxed"
-        >
-          {siteConfig.tagline}
-        </p>
+          {/* ── Right: avatar ── */}
+          <div ref={avatarRef} className="shrink-0">
+            {/* Outer glow ring */}
+            <div className="relative">
+              <div className="absolute -inset-1 rounded-full bg-linear-to-br from-purple-500 via-blue-500 to-cyan-400 opacity-60 blur-md" />
+              {/* Gradient border frame */}
+              <div className="relative p-0.75 rounded-full bg-linear-to-br from-purple-500 via-blue-500 to-cyan-400">
+                <div className="w-56 h-56 md:w-72 md:h-72 rounded-full overflow-hidden bg-background">
+                  <Image
+                    src="/avatar.png"
+                    alt={t("name")}
+                    width={288}
+                    height={288}
+                    className="w-full h-full object-cover object-top"
+                    priority
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
 
-        <div
-          ref={ctaRef}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          <a
-            href="#projects"
-            className="px-8 py-3.5 rounded-full bg-purple-600 hover:bg-purple-500 text-white font-medium text-sm transition-all duration-300 hover:shadow-[0_0_35px_rgba(139,92,246,0.55)] w-full sm:w-auto text-center"
-          >
-            {t("cta_projects")}
-          </a>
-          <a
-            href="#contact"
-            className="px-8 py-3.5 rounded-full border border-theme text-fg-60 hover:text-fg hover:border-purple-500/40 transition-all duration-300 text-sm w-full sm:w-auto text-center"
-          >
-            {t("cta_contact")}
-          </a>
         </div>
       </div>
 

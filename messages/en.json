@@ -7,7 +7,9 @@
   },
   "hero": {
     "greeting": "Hello, I'm",
+    "name": "Huang Chien Hung",
     "roles": ["Full Stack Engineer", "AI Tools Builder", "Open Source Contributor"],
+    "tagline": "I build tools for the web and AI. Passionate about creating impactful products and beautiful, performant experiences.",
     "cta_projects": "View Projects",
     "cta_contact": "Contact Me",
     "scroll": "SCROLL"
@@ -16,6 +18,11 @@
     "eyebrow": "Work",
     "title": "Featured Projects",
     "subtitle": "A selection of things I've built — tools, products, and experiments."
+  },
+  "techStack": {
+    "eyebrow": "Stack",
+    "title": "Technologies I work with",
+    "subtitle": "Tools and languages I use to bring ideas to life"
   },
   "experience": {
     "eyebrow": "Journey",

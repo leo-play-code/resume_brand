@@ -14,10 +14,14 @@ async function requireAdmin() {
 export async function addTechItem(formData: FormData) {
   await requireAdmin();
 
+  const name = formData.get("name") as string;
+  const iconEntry = getTechIcon(name);
+
   await prisma.techStack.create({
     data: {
-      name: formData.get("name") as string,
-      color: (formData.get("color") as string) || "#ffffff",
+      name,
+      icon: iconEntry?.slug ?? null,
+      color: (formData.get("color") as string) || iconEntry?.color || "#ffffff",
       rowNumber: parseInt((formData.get("row_number") as string) || "1"),
       displayOrder: parseInt((formData.get("display_order") as string) || "0"),
     },
@@ -30,6 +34,22 @@ export async function addTechItem(formData: FormData) {
 export async function deleteTechItem(id: string) {
   await requireAdmin();
   await prisma.techStack.delete({ where: { id } });
+  revalidatePath("/");
+  revalidatePath("/admin/tech");
+}
+
+export async function reorderTechItems(
+  updates: { id: string; displayOrder: number; rowNumber?: number }[]
+): Promise<void> {
+  await requireAdmin();
+  await prisma.$transaction(
+    updates.map(({ id, displayOrder, rowNumber }) =>
+      prisma.techStack.update({
+        where: { id },
+        data: { displayOrder, ...(rowNumber !== undefined && { rowNumber }) },
+      })
+    )
+  );
   revalidatePath("/");
   revalidatePath("/admin/tech");
 }

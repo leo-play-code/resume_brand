@@ -7,7 +7,9 @@
   },
   "hero": {
     "greeting": "你好，我是",
+    "name": "黃荐泓",
     "roles": ["全端工程師", "AI 工具開發者", "開源貢獻者"],
+    "tagline": "我打造 AI 與網路工具，熱衷於創造有影響力的產品與優雅的使用者體驗。",
     "cta_projects": "查看作品",
     "cta_contact": "聯絡我",
     "scroll": "滾動"
@@ -16,6 +18,11 @@
     "eyebrow": "作品集",
     "title": "精選作品",
     "subtitle": "精心打造的工具、產品與實驗。"
+  },
+  "techStack": {
+    "eyebrow": "技術棧",
+    "title": "我使用的技術",
+    "subtitle": "我用來實現想法的工具與程式語言"
   },
   "experience": {
     "eyebrow": "旅程",

@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { addTechItem, deleteTechItem } from "@/lib/actions/tech-stack";
+import { addTechItem, deleteTechItem, reorderTechItems } from "@/lib/actions/tech-stack";
 import { deleteSkill } from "@/lib/actions/skills";
 import TechAdminClient from "./TechAdminClient";
 
@@ -25,6 +25,7 @@ export default async function TechAdminPage() {
         items={items}
         addTechItem={addTechItem}
         deleteTechItem={deleteTechItem}
+        reorderTechItems={reorderTechItems}
         customSkills={customSkills}
         deleteSkill={deleteSkill}
       />

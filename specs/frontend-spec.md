@@ -430,6 +430,27 @@ src/
 
 ---
 
+---
+
+## Feature 13: Marquee Speed & Auto-Fill
+
+### 修改 `src/app/globals.css`
+加速 marquee 動畫：
+- `--animate-marquee-left`: `30s` → `14s`
+- `--animate-marquee-right`: `35s` → `17s`
+
+### 修改 `src/components/ui/TechMarquee.tsx`
+將 `[...items, ...items]`（固定 ×2）改為動態計算份數：
+```ts
+// 確保視窗寬度填滿（每份 ≈130px，目標 ≥30 份 in each half）
+const copies = Math.max(4, Math.ceil(30 / Math.max(1, items.length)) * 2);
+const track = Array.from({ length: copies }, () => items).flat();
+```
+- `copies` 保持偶數 → `translateX(-50%)` 動畫無縫循環
+- Row 2 即使只有 2 筆資料，也會複製足夠次數填滿視窗
+
+---
+
 ## Task Status
 
 ### Done (Feature 12 — Bilingual i18n)

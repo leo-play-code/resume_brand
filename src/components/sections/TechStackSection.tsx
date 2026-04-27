@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import { useTranslations } from "next-intl";
 import TechMarquee from "@/components/ui/TechMarquee";
 import type { TechItem } from "@/lib/data/tech-stack";
 
@@ -15,6 +16,7 @@ interface Props {
 }
 
 export default function TechStackSection({ row1, row2 }: Props) {
+  const t = useTranslations("techStack");
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef   = useRef<HTMLDivElement>(null);
 
@@ -36,13 +38,13 @@ export default function TechStackSection({ row1, row2 }: Props) {
     <section ref={sectionRef} className="py-24 overflow-hidden">
       <div ref={titleRef} className="text-center mb-14 px-6">
         <p className="text-purple-400 text-xs font-mono tracking-[0.3em] uppercase mb-4">
-          Stack
+          {t("eyebrow")}
         </p>
         <h2 className="text-3xl md:text-5xl font-bold text-fg mb-3">
-          Technologies I work with
+          {t("title")}
         </h2>
         <p className="text-fg-35 text-sm md:text-base">
-          Tools and languages I use to bring ideas to life
+          {t("subtitle")}
         </p>
       </div>
 

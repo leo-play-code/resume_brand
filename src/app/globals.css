@@ -36,8 +36,8 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  --animate-marquee-left:  marquee-left  30s linear infinite;
-  --animate-marquee-right: marquee-right 35s linear infinite;
+  --animate-marquee-left:  marquee-left  90s linear infinite;
+  --animate-marquee-right: marquee-right 90s linear infinite;
   --animate-cursor-blink:  cursor-blink  1s step-end infinite;
 }
 

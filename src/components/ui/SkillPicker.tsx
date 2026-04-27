@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { X, Check, Plus } from "lucide-react";
 import { addSkill } from "@/lib/actions/skills";
+import { getTechIcon } from "@/lib/tech-icon-map";
 
 interface Skill {
   id: string;
@@ -16,12 +17,41 @@ interface SkillPickerProps {
   name: string;
   defaultValue?: string[];
   singleSelect?: boolean;
+  onSelectChange?: (name: string) => void;
+}
+
+function SkillIcon({ nameZh, nameEn, size = 14 }: { nameZh: string; nameEn?: string; size?: number }) {
+  const entry = getTechIcon(nameEn || nameZh) ?? getTechIcon(nameZh);
+  const [failed, setFailed] = useState(false);
+
+  if (!entry || failed) {
+    return (
+      <span
+        className="rounded-sm shrink-0 flex items-center justify-center text-[9px] font-bold text-white/60"
+        style={{ width: size, height: size }}
+      >
+        {(nameEn || nameZh).charAt(0).toUpperCase()}
+      </span>
+    );
+  }
+
+  return (
+    <img
+      src={`https://cdn.simpleicons.org/${entry.slug}`}
+      alt=""
+      width={size}
+      height={size}
+      className="object-contain shrink-0"
+      onError={() => setFailed(true)}
+    />
+  );
 }
 
 export default function SkillPicker({
   name,
   defaultValue = [],
   singleSelect = false,
+  onSelectChange,
 }: SkillPickerProps) {
   const [selected, setSelected] = useState<string[]>(defaultValue);
   const [query, setQuery] = useState("");
@@ -31,6 +61,7 @@ export default function SkillPicker({
   const [addError, setAddError] = useState<string | null>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const skillMapRef = useRef<Map<string, Skill>>(new Map());
 
   // Group skills by category
   const grouped = results.reduce<Record<string, Skill[]>>((acc, skill) => {
@@ -44,7 +75,9 @@ export default function SkillPicker({
     fetch(`/api/skills?${params}`)
       .then((r) => r.json())
       .then((json) => {
-        setResults(json.data ?? []);
+        const data: Skill[] = json.data ?? [];
+        setResults(data);
+        data.forEach((s) => skillMapRef.current.set(s.nameZh, s));
       })
       .catch(() => setResults([]));
   }, []);
@@ -80,12 +113,15 @@ export default function SkillPicker({
     if (singleSelect) {
       setSelected([skillName]);
       setOpen(false);
+      onSelectChange?.(skillName);
     } else {
-      setSelected((prev) =>
-        prev.includes(skillName)
+      setSelected((prev) => {
+        const next = prev.includes(skillName)
           ? prev.filter((s) => s !== skillName)
-          : [...prev, skillName]
-      );
+          : [...prev, skillName];
+        if (next.length === 1) onSelectChange?.(next[0]);
+        return next;
+      });
     }
   }
 
@@ -107,9 +143,7 @@ export default function SkillPicker({
     if ("error" in result) {
       setAddError(result.error ?? "Unknown error");
     } else {
-      // Add to selected
       toggleSkill(result.skill.nameZh);
-      // Refresh skill list
       fetchSkills("");
       setQuery("");
     }
@@ -124,22 +158,26 @@ export default function SkillPicker({
       {/* Selected tags */}
       {selected.length > 0 && (
         <div className="flex flex-wrap gap-1.5 mb-2">
-          {selected.map((skillName) => (
-            <span
-              key={skillName}
-              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-500/15 border border-purple-500/25 text-purple-300 text-xs"
-            >
-              {skillName}
-              <button
-                type="button"
-                onClick={() => removeSkill(skillName)}
-                aria-label={`移除 ${skillName}`}
-                className="hover:text-red-400 transition-colors"
+          {selected.map((skillName) => {
+            const skill = skillMapRef.current.get(skillName);
+            return (
+              <span
+                key={skillName}
+                className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-purple-500/15 border border-purple-500/25 text-purple-300 text-xs"
               >
-                <X size={10} />
-              </button>
-            </span>
-          ))}
+                <SkillIcon nameZh={skillName} nameEn={skill?.nameEn} size={12} />
+                {skillName}
+                <button
+                  type="button"
+                  onClick={() => removeSkill(skillName)}
+                  aria-label={`移除 ${skillName}`}
+                  className="hover:text-red-400 transition-colors"
+                >
+                  <X size={10} />
+                </button>
+              </span>
+            );
+          })}
         </div>
       )}
 
@@ -156,7 +194,7 @@ export default function SkillPicker({
         onKeyDown={(e) => {
           if (e.key === "Escape") setOpen(false);
         }}
-        className="w-full px-3 py-2 rounded-lg border border-white/[0.08] bg-white/[0.03] text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-purple-500/50"
+        className="w-full px-3 py-2 rounded-lg border border-white/8 bg-white/3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-purple-500/50"
         autoComplete="off"
         aria-autocomplete="list"
         aria-expanded={open}
@@ -168,9 +206,9 @@ export default function SkillPicker({
 
       {/* Dropdown */}
       {open && (
-        <div className="absolute z-50 w-full mt-1 rounded-lg border border-white/[0.08] bg-[#0a0a1a] shadow-xl max-h-64 overflow-y-auto">
+        <div className="absolute z-50 w-full mt-1 rounded-lg border border-white/8 bg-[#0a0a1a] shadow-xl max-h-64 overflow-y-auto">
           {addError && (
-            <div className="px-3 py-2 text-red-400 text-xs border-b border-white/[0.06]">
+            <div className="px-3 py-2 text-red-400 text-xs border-b border-white/6">
               {addError}
             </div>
           )}
@@ -193,10 +231,11 @@ export default function SkillPicker({
                           e.preventDefault();
                           toggleSkill(skill.nameZh);
                         }}
-                        className={`flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-white/[0.06] transition-colors ${
+                        className={`flex items-center gap-2.5 px-3 py-2 cursor-pointer hover:bg-white/6 transition-colors ${
                           isSelected ? "bg-purple-500/10" : ""
                         }`}
                       >
+                        <SkillIcon nameZh={skill.nameZh} nameEn={skill.nameEn} size={15} />
                         <div className="flex-1 min-w-0">
                           <div className="text-white text-sm truncate">{skill.nameZh}</div>
                           {skill.nameEn && skill.nameEn !== skill.nameZh && (
@@ -223,7 +262,7 @@ export default function SkillPicker({
                   handleAddCustom();
                 }}
                 disabled={isAdding}
-                className="w-full flex items-center gap-2 px-3 py-2.5 text-left hover:bg-white/[0.06] transition-colors text-purple-400 text-sm disabled:opacity-50"
+                className="w-full flex items-center gap-2 px-3 py-2.5 text-left hover:bg-white/6 transition-colors text-purple-400 text-sm disabled:opacity-50"
               >
                 <Plus size={14} />
                 {isAdding ? "新增中..." : `新增自訂技能：「${query}」`}
