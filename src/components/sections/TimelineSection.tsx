@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import { useTranslations } from "next-intl";
 import TimelineItem from "@/components/ui/TimelineItem";
 import type { Experience } from "@/lib/data/experience";
 
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export default function TimelineSection({ experiences }: Props) {
+  const t = useTranslations("experience");
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef   = useRef<HTMLDivElement>(null);
   const listRef    = useRef<HTMLDivElement>(null);
@@ -49,10 +51,10 @@ export default function TimelineSection({ experiences }: Props) {
       <div className="max-w-3xl mx-auto">
         <div ref={titleRef} className="text-center mb-16">
           <p className="text-purple-400 text-xs font-mono tracking-[0.3em] uppercase mb-4">
-            Journey
+            {t("eyebrow")}
           </p>
           <h2 className="text-3xl md:text-5xl font-bold text-fg">
-            Experience
+            {t("title")}
           </h2>
         </div>
 

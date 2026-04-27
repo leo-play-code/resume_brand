@@ -156,6 +156,19 @@ export default function ExperienceAdminClient({
             </div>
           )}
 
+          <Field label="Role (EN, optional)" name="role_en" />
+          <div>
+            <label className="block text-fg-50 text-xs mb-1.5">
+              Description bullets (EN, optional)
+              <span className="text-fg-25 ml-1 font-mono">（每行一個 bullet）</span>
+            </label>
+            <textarea
+              name="description_en"
+              rows={3}
+              className="w-full px-3 py-2 rounded-lg border border-theme bg-surface text-fg text-sm placeholder:text-fg-20 focus:outline-none focus:border-purple-500/50 resize-none"
+            />
+          </div>
+
           <Field label="Period (e.g. 2023.06 — Present) *" name="period" required />
           <div>
             <label className="block text-fg-50 text-xs mb-1.5">

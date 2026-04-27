@@ -1,6 +1,7 @@
 export interface TechItem {
   name: string;
   color: string;
+  icon?: string;  // Simple Icons slug, e.g. "react"
 }
 
 export const techStackRow1: TechItem[] = [

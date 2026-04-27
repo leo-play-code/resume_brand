@@ -152,13 +152,56 @@ Migration name: `add_hero_js_to_project`
 
 ---
 
+---
+
+## Modified Models (Round 4)
+
+### TechStack — 新增欄位
+```prisma
+icon  String?  // Simple Icons slug, e.g. "react", "typescript", "nextdotjs"
+              // 供前台 TechMarquee 以 https://cdn.simpleicons.org/{icon} 渲染品牌 icon
+              // null → fallback 顯示 color dot
+```
+
+Migration name: `add_icon_to_tech_stack`
+
+---
+
+---
+
+## Modified Models (Round 5 — i18n)
+
+### Project — 新增英文欄位
+```prisma
+nameEn            String?  @map("name_en")
+descriptionEn     String?  @map("description_en")
+longDescriptionEn String?  @map("long_description_en")
+// null → fallback 顯示原有中文欄位
+```
+
+### Experience — 新增英文欄位
+```prisma
+roleEn        String?  @map("role_en")
+descriptionEn String[] @default([]) @map("description_en")
+// 空陣列 → fallback 顯示原有中文 description
+```
+
+Migration name: `add_i18n_fields`
+
+---
+
 ## Task Status
 
 ### Pending
+- [x] Add `nameEn`, `descriptionEn`, `longDescriptionEn` (all String?) to Project in `prisma/schema.prisma`
+- [x] Add `roleEn String?`, `descriptionEn String[]` (default []) to Experience in `prisma/schema.prisma`
+- [x] Create migration `add_i18n_fields`
 - [x] Add `heroType` (String, default "mp4") + `heroJsCode` (String?) to Project model in `prisma/schema.prisma`
 - [x] Create migration `add_hero_js_to_project`
 
 ### Done (previously marked)
+- [x] Add `icon String?` to TechStack in `prisma/schema.prisma`
+- [x] Create migration `add_icon_to_tech_stack`
 - [x] Add `SiteSettings` model to `prisma/schema.prisma`
 - [x] Create migration `add_site_settings`
 - [x] Seed `SiteSettings` singleton record in `prisma/seed.ts`

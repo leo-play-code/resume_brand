@@ -167,12 +167,78 @@ HTML template 注意事項：
 
 ---
 
+---
+
+## Modified Actions (Round 4)
+
+### addProject / updateProject（修改）
+在 `src/lib/actions/projects.ts` 的 `addProject` 和 `updateProject` 完成 DB 寫入後，呼叫 `syncProjectTechToStack(techStack)`：
+
+```
+Business logic of syncProjectTechToStack(names: string[]):
+1. prisma.techStack.findMany() 取得所有現有 TechStack 名稱
+2. 對每個 name in names:
+   - case-insensitive 比對，若已存在 → skip
+   - 若不存在 → 從 TECH_ICON_MAP 查找 { slug, color }
+     - 有 map → 建立 TechStack { name, icon: slug, color, rowNumber, displayOrder }
+     - 無 map → 建立 TechStack { name, icon: null, color: '#8b5cf6' (purple fallback), rowNumber, displayOrder }
+   - rowNumber 交替：現有 row1 count <= row2 count → 加到 row1，否則 row2
+   - displayOrder = 現有同 row 的最大 displayOrder + 1
+3. revalidatePath('/')
+```
+
+---
+
+---
+
+## Modified Actions (Round 5 — i18n)
+
+### addProject / updateProject（修改）
+新增 EN 欄位支援：
+```
+新增 FormData fields:
+  name_en:             String? — 英文名稱
+  description_en:      String? — 英文 tagline
+  long_description_en: String? — 英文 long description
+
+業務邏輯：存入 nameEn / descriptionEn / longDescriptionEn
+```
+
+### addExperience（修改）
+```
+新增 FormData fields:
+  role_en:        String? — 英文職稱
+  description_en: String  — 英文 bullet points（換行分隔），存為 String[]
+
+業務邏輯：
+- description_en.split('\n').filter(Boolean) → descriptionEn 陣列
+```
+
+### getData() in src/app/[locale]/page.tsx（修改）
+```
+接收 locale: 'zh' | 'en' 參數
+Project mapping：
+  name = locale === 'en' ? (p.nameEn || p.name) : p.name
+  description = locale === 'en' ? (p.descriptionEn || p.description) : p.description
+  longDescription = locale === 'en' ? (p.longDescriptionEn || p.longDescription) : p.longDescription
+
+Experience mapping：
+  role = locale === 'en' ? (e.roleEn || e.role) : e.role
+  description = locale === 'en' && e.descriptionEn.length > 0 ? e.descriptionEn : e.description
+```
+
+---
+
 ## Task Status
 
 ### Pending
-_(none)_
+- [x] 修改 `src/lib/actions/projects.ts` — addProject + updateProject 新增 nameEn / descriptionEn / longDescriptionEn 欄位
+- [x] 修改 `src/lib/actions/experience.ts` — addExperience 新增 roleEn / descriptionEn 欄位
 
 ### Done
+- [x] 新建 `src/lib/tech-icon-map.ts` — TECH_ICON_MAP：tech name → { slug, color }（涵蓋 60+ 常見技術）
+- [x] 修改 `src/lib/actions/projects.ts` — `addProject` + `updateProject` 結尾呼叫 `syncProjectTechToStack`
+- [x] 新增 `syncProjectTechToStack` 函式（可放在 `src/lib/actions/tech-stack.ts`）
 - [x] Create `src/app/api/skills/route.ts` — GET handler with search + category filter
 - [x] Create `src/lib/actions/skills.ts` — `addSkill`, `deleteSkill` server actions
 - [x] Create `src/lib/actions/settings.ts` — `getSiteSettings`, `updateSiteSettings`

@@ -287,12 +287,182 @@ src/
 
 ---
 
+---
+
+## Feature 11: TechStack Icons + Auto-Sync from Projects
+
+### 修改 `src/lib/data/tech-stack.ts`
+`TechItem` 介面加入 `icon?: string`：
+```ts
+export interface TechItem {
+  name: string;
+  color: string;
+  icon?: string;   // Simple Icons slug
+}
+```
+
+### 修改 `src/app/page.tsx`
+DB TechStack mapping 加入 `icon` 欄位：
+```ts
+dbTech.map(t => ({ name: t.name, color: t.color, icon: t.icon ?? undefined }))
+```
+
+### 修改 `src/components/ui/TechMarquee.tsx`
+將 color dot 改為：
+- `icon` 有值 → `<img src="https://cdn.simpleicons.org/{icon}" alt={name} className="w-4 h-4 object-contain" />`
+- `icon` 為 null/undefined → 保留原有 color dot（fallback）
+
+```tsx
+{tech.icon ? (
+  <img
+    src={`https://cdn.simpleicons.org/${tech.icon}`}
+    alt={tech.name}
+    className="w-4 h-4 object-contain shrink-0"
+  />
+) : (
+  <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: tech.color }} />
+)}
+```
+
+---
+
+---
+
+## Feature 12: Bilingual Support（中英切換）
+
+### 依賴安裝
+```bash
+npm install next-intl
+```
+
+### 新建 `messages/zh.json` 與 `messages/en.json`
+靜態翻譯文字，結構：
+```json
+{
+  "nav": { "about": "關於/About", "projects": "作品/Projects", "experience": "經歷/Experience", "contact": "聯絡/Contact" },
+  "hero": {
+    "greeting": "你好，我是 / Hello, I'm",
+    "roles": ["全端工程師/Full Stack Engineer", "AI 工具開發者/AI Tools Builder", "開源貢獻者/Open Source Contributor"],
+    "cta_projects": "查看作品/View Projects",
+    "cta_contact": "聯絡我/Contact Me",
+    "scroll": "滾動/SCROLL",
+    "tagline": "[中文 tagline] / [English tagline]"
+  },
+  "projects": { "eyebrow": "作品集/Work", "title": "精選作品/Featured Projects", "subtitle": "..." },
+  "experience": { "eyebrow": "旅程/Journey", "title": "工作經歷/Experience" },
+  "contact": { "eyebrow": "聯絡/Contact", "title_1": "一起/Let's work", "title_2": "合作/together.", "subtitle": "...", "footer": "Built with Next.js & GSAP." }
+}
+```
+
+### 新建 `src/i18n/request.ts`
+next-intl server 設定檔（getRequestConfig）。
+
+### 新建 `src/middleware.ts`
+```ts
+// next-intl createNavigation + 排除 /admin, /api, /_next, /favicon.ico
+export const config = {
+  matcher: ['/((?!admin|api|_next|favicon.ico|videos|.*\\..*).*)']
+}
+```
+支援 locales: ['zh', 'en']，defaultLocale: 'zh'。
+
+### 遷移 `src/app/page.tsx` → `src/app/[locale]/page.tsx`
+- 接收 `{ params: { locale } }` 參數
+- getData(locale) 回傳 locale-aware 資料
+- setRequestLocale(locale) (next-intl static rendering)
+
+### 新建 `src/app/[locale]/layout.tsx`
+```tsx
+import { NextIntlClientProvider } from 'next-intl'
+// 載入對應 messages，包裹 children
+// setRequestLocale(locale)
+```
+
+### 修改 `src/app/layout.tsx`（根 layout）
+移除直接 render 內容，改為提供最小 html/body 包裹（locale layout 負責 NextIntlClientProvider）。
+
+### 修改 `src/components/sections/HeroSection.tsx`
+- `useTranslations('hero')` 替換所有硬編碼字串
+- ROLES 陣列改從 `t.raw('roles')` 讀取（陣列型翻譯）
+
+### 修改 `src/components/sections/ProjectsSection.tsx`
+- `useTranslations('projects')` 替換 eyebrow、title、subtitle
+
+### 修改 `src/components/sections/TimelineSection.tsx`
+- `useTranslations('experience')` 替換 eyebrow、title
+
+### 修改 `src/components/sections/ContactSection.tsx`
+- `useTranslations('contact')` 替換所有靜態文字
+
+### 修改 `src/components/layout/Navbar.tsx`
+- `useTranslations('nav')` 替換 NAV_LINKS 的 label
+- 加入語言切換按鈕（`ZH | EN`）在 theme toggle 旁
+  - 讀取目前 locale（`useLocale()` from next-intl）
+  - 點擊切換 → `router.replace(pathname, { locale: 'en' | 'zh' })`
+
+### 修改 `src/app/admin/projects/ProjectsAdminClient.tsx`
+Add / Edit 表單各加三個 EN 欄位（可選）：
+- Name (EN)：`name_en`
+- Short description (EN)：`description_en`
+- Long description (EN)：`long_description_en`
+放在對應 ZH 欄位下方，標記 `(English, optional)`
+
+### 修改 `src/app/admin/experience/ExperienceAdminClient.tsx`
+Add 表單加兩個 EN 欄位：
+- Role (EN)：`role_en`
+- Description bullets (EN)：`description_en`（textarea，一行一個 bullet）
+
+### File Structure（新增）
+```
+messages/
+  zh.json
+  en.json
+src/
+  middleware.ts              ← 新建
+  i18n/
+    request.ts               ← 新建
+  app/
+    [locale]/
+      layout.tsx             ← 新建
+      page.tsx               ← 移動自 app/page.tsx
+    layout.tsx               ← 修改（只保留根 html/body）
+```
+
+---
+
 ## Task Status
+
+### Done (Feature 12 — Bilingual i18n)
+- [x] [i18n] 安裝 `next-intl`
+- [x] [i18n] 新建 `messages/zh.json` + `messages/en.json`（含所有靜態文字中英對照）
+- [x] [i18n] 新建 `src/i18n/request.ts`（next-intl getRequestConfig）
+- [x] [i18n] 新建 `src/middleware.ts`（locale routing，排除 /admin /api /_next）
+- [x] [i18n] 新建 `src/app/[locale]/layout.tsx`（NextIntlClientProvider）
+- [x] [i18n] 遷移 `src/app/page.tsx` → `src/app/[locale]/page.tsx`（接收 locale param，getData(locale)）
+- [x] [i18n] 修改 `src/app/layout.tsx`（根 layout 最小化）
+- [x] [i18n] 修改 `HeroSection.tsx` — useTranslations('hero')
+- [x] [i18n] 修改 `ProjectsSection.tsx` — useTranslations('projects')
+- [x] [i18n] 修改 `TimelineSection.tsx` — useTranslations('experience')
+- [x] [i18n] 修改 `ContactSection.tsx` — useTranslations('contact')
+- [x] [i18n] 修改 `Navbar.tsx` — useTranslations('nav') + ZH/EN 切換按鈕
+- [x] [i18n] 修改 `ProjectsAdminClient.tsx` — 加入 nameEn / descriptionEn / longDescriptionEn 欄位
+- [x] [i18n] 修改 `ExperienceAdminClient.tsx` — 加入 roleEn / descriptionEn 欄位
+
+### Done (Feature 11 — TechStack Icons)
+- [x] [Feature 11] 修改 `src/lib/data/tech-stack.ts` — TechItem 加 `icon?: string`
+- [x] [Feature 11] 修改 `src/app/page.tsx` — DB TechStack mapping 帶入 icon 欄位
+- [x] [Feature 11] 修改 `src/components/ui/TechMarquee.tsx` — icon 有值時顯示 Simple Icons img
+
+### Done (Feature 10 — Edit Projects + JS Demo JSX Fix)
+- [x] 修改 `src/app/admin/projects/page.tsx` — 傳入 `updateProject` prop 至 ProjectsAdminClient
+- [x] 修改 `src/app/admin/projects/ProjectsAdminClient.tsx` — 加入 Pencil 編輯按鈕 + inline 編輯表單（含 heroType/heroJsCode 欄位預填）
+- [x] 修改 `src/lib/demo-template.ts` — 加入 Babel standalone 轉譯 JSX；改用絕對 CDN URL 取代 importmap（解決 Blob URL 不繼承 importmap 的問題）
+- [x] 修改 `src/app/api/demo/[projectId]/route.ts` — 移除 as any cast（需 prisma generate 後生效）
 
 ### Done (Feature 9 — JS Demo Hero)
 - [x] 修改 `src/app/admin/projects/ProjectsAdminClient.tsx` — 加入 heroType toggle (mp4/js-demo) + heroJsCode 程式碼 textarea
 - [x] 修改 `src/components/ui/ProjectCard.tsx` — media 區塊：heroType==="js-demo" 時渲染 `<iframe src="/api/demo/[id]" />`
-- [ ] 新建 `src/lib/demo-template.ts` — `buildDemoHtml(jsCode: string): string` 工具函式（輸出完整 HTML with importmap + CDN）
+- [x] 新建 `src/lib/demo-template.ts` — `buildDemoHtml(jsCode: string): string` 工具函式
 
 ### Done (Feature 8 — Adaptive Theme Colors)
 - [x] 新建 `src/lib/utils/color.ts` — `isLightColor(hex)` + `buildCssVars(bg, isLight)` 工具函式

@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import { useTranslations } from "next-intl";
 import ProjectCard from "@/components/ui/ProjectCard";
 import type { Project } from "@/lib/data/projects";
 
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export default function ProjectsSection({ projects }: Props) {
+  const t = useTranslations("projects");
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef   = useRef<HTMLDivElement>(null);
   const gridRef    = useRef<HTMLDivElement>(null);
@@ -48,13 +50,13 @@ export default function ProjectsSection({ projects }: Props) {
       <div className="max-w-6xl mx-auto">
         <div ref={titleRef} className="text-center mb-16">
           <p className="text-purple-400 text-xs font-mono tracking-[0.3em] uppercase mb-4">
-            Work
+            {t("eyebrow")}
           </p>
           <h2 className="text-3xl md:text-5xl font-bold text-fg mb-4">
-            Featured Projects
+            {t("title")}
           </h2>
           <p className="text-fg-35 max-w-lg mx-auto text-sm md:text-base">
-            A selection of things I&apos;ve built — tools, products, and experiments.
+            {t("subtitle")}
           </p>
         </div>
 

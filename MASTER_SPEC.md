@@ -33,8 +33,16 @@
 ### ✅ 已完成（Round 4）
 - **[THEME] Adaptive Text Color** — `buildCssVars()` 根據背景亮度自動計算 16 個 CSS vars；Admin 全站改用 `text-fg`/`bg-surface`
 
-### 🟡 進行中 / Pending（Round 5）
-- **[MEDIA] JS Demo Hero** — Project 支援 heroType: "mp4" | "js-demo"，Admin 可貼入 React 元件程式碼，前台以 sandboxed `<iframe>` + `/api/demo/[id]` 渲染（自動載入 framer-motion / lucide-react CDN）
+### ✅ 已完成（Round 5）
+- **[MEDIA] JS Demo Hero** — Project 支援 heroType: "mp4" | "js-demo"，Admin 可貼入 React 元件程式碼，前台以 sandboxed `<iframe>` + `/api/demo/[id]` 渲染；Babel standalone 轉譯 JSX，絕對 CDN URL 解決 Blob URL importmap 限制
+- **[ADMIN] Edit Projects** — Admin Projects 頁面每筆資料有 Pencil 按鈕，展開 inline 編輯表單（全欄位預填，含 heroType/heroJsCode）
+
+### ✅ 已完成（Round 6）
+- **[SYNC] Project Tech → TechStack Auto-Sync** — 儲存 project 時，techStack 陣列自動同步到 TechStack 表（case-insensitive dedup）；新技術自動補 Simple Icons slug + 品牌色
+- **[UI] TechStack Icon Display** — TechMarquee 改顯示 Simple Icons icon（`https://cdn.simpleicons.org/{slug}`），無 icon 的技術 fallback 顯示 color dot
+
+### 🚧 規劃中（Round 7）
+- **[I18N] 中英文切換** — `next-intl` + URL locale routing（`/zh`, `/en`）；靜態 UI 文字用 translation files；DB 動態內容（Project/Experience）新增 EN 欄位，無 EN 時 fallback 中文；Navbar 加語言切換按鈕；Admin 表單加 EN 欄位輸入
 
 ## Spec Files
 - [specs/data-models.md](specs/data-models.md)

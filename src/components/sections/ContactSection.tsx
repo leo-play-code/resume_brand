@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import { useTranslations } from "next-intl";
 import { Mail, Copy, Check } from "lucide-react";
 import { GitHubIcon, LinkedInIcon, XIcon } from "@/components/ui/Icons";
 import { siteConfig } from "@/lib/config";
@@ -17,6 +18,7 @@ const SOCIALS = [
 ];
 
 export default function ContactSection() {
+  const t = useTranslations("contact");
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
@@ -48,17 +50,16 @@ export default function ContactSection() {
 
       <div ref={contentRef} className="relative max-w-2xl mx-auto text-center">
         <p className="text-purple-400 text-xs font-mono tracking-[0.3em] uppercase mb-6">
-          Contact
+          {t("eyebrow")}
         </p>
 
         <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-fg mb-6 leading-tight">
-          Let&apos;s work{" "}
-          <span className="gradient-text">together.</span>
+          {t("title_1")}{" "}
+          <span className="gradient-text">{t("title_2")}</span>
         </h2>
 
         <p className="text-fg-35 text-base md:text-lg mb-12 leading-relaxed max-w-md mx-auto">
-          Open to new opportunities, collaborations, and interesting
-          conversations. Don&apos;t be a stranger.
+          {t("subtitle")}
         </p>
 
         {/* Email copy button */}
@@ -93,7 +94,7 @@ export default function ContactSection() {
 
         {/* Footer */}
         <p className="text-fg-20 text-xs font-mono">
-          © {new Date().getFullYear()} {siteConfig.ownerName}. Built with Next.js &amp; GSAP.
+          © {new Date().getFullYear()} {siteConfig.ownerName}. {t("footer")}
         </p>
       </div>
     </section>

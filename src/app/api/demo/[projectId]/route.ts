@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-// TODO: remove 'as any' casts once `npx prisma generate` has been re-run
-// (currently blocked by EPERM — dev server holds the query engine DLL).
 import { prisma } from '@/lib/prisma';
 import { buildDemoHtml } from '@/lib/demo-template';
 
@@ -10,10 +8,10 @@ export async function GET(
 ) {
   const { projectId } = await params;
 
-  const project = await (prisma.project.findUnique as any)({
+  const project = await prisma.project.findUnique({
     where: { id: projectId },
     select: { heroType: true, heroJsCode: true },
-  }) as { heroType: string; heroJsCode: string | null } | null;
+  });
 
   if (!project || project.heroType !== 'js-demo' || !project.heroJsCode) {
     return new NextResponse('Not found', { status: 404 });

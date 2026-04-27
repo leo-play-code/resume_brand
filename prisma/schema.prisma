@@ -15,8 +15,11 @@ model Project {
   longDescription String   @default("") @map("long_description")
   videoUrl        String   @default("") @map("video_url")
   heroType        String   @default("mp4") @map("hero_type")
-  heroJsCode      String?  @map("hero_js_code")
-  githubUrl       String?  @map("github_url")
+  heroJsCode        String?  @map("hero_js_code")
+  nameEn            String?  @map("name_en")
+  descriptionEn     String?  @map("description_en")
+  longDescriptionEn String?  @map("long_description_en")
+  githubUrl         String?  @map("github_url")
   liveUrl         String?  @map("live_url")
   techStack       String[] @map("tech_stack")
   featured        Boolean  @default(false)
@@ -27,11 +30,12 @@ model Project {
 }
 
 model TechStack {
-  id           String @id @default(uuid())
+  id           String  @id @default(uuid())
   name         String
-  color        String @default("#ffffff")
-  rowNumber    Int    @default(1) @map("row_number")
-  displayOrder Int    @default(0) @map("display_order")
+  color        String  @default("#ffffff")
+  icon         String? @map("icon")
+  rowNumber    Int     @default(1) @map("row_number")
+  displayOrder Int     @default(0) @map("display_order")
 
   @@map("tech_stack")
 }
@@ -42,8 +46,10 @@ model Experience {
   role         String
   period       String
   description  String[]
-  type         String   @default("work")
-  displayOrder Int      @default(0) @map("display_order")
+  type          String   @default("work")
+  roleEn        String?  @default("") @map("role_en")
+  descriptionEn String[] @default([]) @map("description_en")
+  displayOrder  Int      @default(0) @map("display_order")
 
   @@map("experiences")
 }

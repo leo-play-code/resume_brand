@@ -119,6 +119,22 @@
 ### Pending
 - [ ] [Integration] Admin layout 背景色與前台 `--background` CSS var 一致
 - [ ] [Regression] Prisma Client stale after migration — 確認新增 model 後 `npx prisma generate` 已執行，`prisma.siteSettings.findUnique` 不再拋出 undefined error
+- [ ] [Regression] addProject heroType/heroJsCode — 確認上傳 project 含 heroType="js-demo" 及 heroJsCode 不再出現 PrismaClientValidationError "Unknown argument heroType"
+- [ ] [Regression] updateProject heroType/heroJsCode — 確認編輯 project 時 heroType/heroJsCode 欄位被正確寫入 DB，不會被清空
+- [ ] [Regression] JS Demo JSX render — 確認含 JSX 語法（`<Component />`）的 heroJsCode 在 iframe 中正確渲染，不再出現 SyntaxError: Unexpected token '<'
+- [ ] [Regression] JS Demo scaleToFit timing — 確認使用 Framer Motion 動畫（initial scale:0 或 opacity:0）的 component 在 iframe 中能正確顯示並縮放，MutationObserver + ResizeObserver 不再因 rAF 過早執行導致白屏
+- [ ] [Regression] JS Demo multiple React instances — 確認 framer-motion/lucide-react 的 CDN URL 含 ?external=react 後，useContext 不再出現 TypeError: Cannot read properties of null
+- [ ] [Regression] Blob upload callbackUrl — 確認 /api/upload/video 移除 onUploadCompleted 後，上傳 MP4 不再出現 "no callbackUrl could be determined" 錯誤
+- [x] [Feature 11] syncProjectTechToStack — 新增 project 含 ["React","NewTech"] 後，TechStack 表中 NewTech 自動新增且 React 不重複 (9 cases; completed: 2026-04-27)
+- [x] [Feature 11] icon map coverage — TECH_ICON_MAP 涵蓋 React/Next.js/TypeScript/Python/PostgreSQL/Docker 等常見技術，slug 正確 (10 cases; completed: 2026-04-27)
+- [x] [Feature 11] TechMarquee icon render — TechItem.icon 有值時顯示 <img>，無值時 fallback color dot (9 cases; completed: 2026-04-27)
+- [ ] [Regression] Video autoplay — 確認 ProjectCard 影片在頁面載入後自動播放，不再需要 hover 才觸發
+- [x] [i18n] middleware locale routing — Manual/E2E only (needs Playwright): GET / → redirect /zh；GET /en → locale=en；GET /admin → 不被攔截；middleware matcher 已 unit-verified via src/middleware.ts config review (completed: 2026-04-27)
+- [x] [i18n] HeroSection zh/en — locale=zh 顯示「你好，我是」，locale=en 顯示「Hello, I'm」；covered by messages.test.ts (zh.hero.greeting / en.hero.greeting assertions) (completed: 2026-04-27)
+- [x] [i18n] Navbar language toggle — locale=zh → button shows "EN"；locale=en → button shows "中文"；unit: Navbar.i18n.test.tsx (2 cases)；URL push requires E2E/Playwright (completed: 2026-04-27)
+- [x] [i18n] Project EN fallback — project 無 nameEn → locale=en 時顯示中文 name；covered by i18n-fallback.test.ts resolveProjectName() (6 cases) (completed: 2026-04-27)
+- [x] [i18n] Experience EN fallback — experience 無 roleEn → locale=en 時顯示中文 role；covered by i18n-fallback.test.ts resolveExperienceRole() + resolveExperienceDescription() (9 cases) (completed: 2026-04-27)
+- [ ] [Feature] Edit Project — 確認後台 Pencil 按鈕展開 inline 編輯表單，欄位預填正確，送出後資料更新，表單收合
 
 ### Done
 - [x] `demo-template.test.ts` — `buildDemoHtml(code)` 回傳字串包含 <!DOCTYPE html>、react esm.sh CDN、framer-motion、lucide-react、`<div id="root">`；包含傳入的 code；backtick 和 ${} sanitization 不 crash (10 cases; completed: 2026-04-26)

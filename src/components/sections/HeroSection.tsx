@@ -4,17 +4,15 @@ import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import { useTranslations } from "next-intl";
 import { siteConfig } from "@/lib/config";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const ROLES = [
-  "Full Stack Engineer",
-  "AI Tools Builder",
-  "Open Source Contributor",
-];
-
 export default function HeroSection() {
+  const t = useTranslations("hero");
+  const ROLES = t.raw("roles") as string[];
+
   const sectionRef  = useRef<HTMLElement>(null);
   const contentRef  = useRef<HTMLDivElement>(null);
   const headingRef  = useRef<HTMLDivElement>(null);
@@ -47,7 +45,7 @@ export default function HeroSection() {
       );
     }
     return () => clearTimeout(timer);
-  }, [displayed, isDeleting, roleIndex]);
+  }, [displayed, isDeleting, roleIndex, ROLES]);
 
   /* GSAP entrance + parallax */
   useGSAP(
@@ -91,7 +89,7 @@ export default function HeroSection() {
 
       <div ref={contentRef} className="relative z-10 max-w-4xl mx-auto">
         <p className="text-purple-400 text-xs font-mono tracking-[0.3em] uppercase mb-8">
-          Hello, I&apos;m
+          {t("greeting")}
         </p>
 
         <div ref={headingRef}>
@@ -120,20 +118,20 @@ export default function HeroSection() {
             href="#projects"
             className="px-8 py-3.5 rounded-full bg-purple-600 hover:bg-purple-500 text-white font-medium text-sm transition-all duration-300 hover:shadow-[0_0_35px_rgba(139,92,246,0.55)] w-full sm:w-auto text-center"
           >
-            View Projects
+            {t("cta_projects")}
           </a>
           <a
             href="#contact"
             className="px-8 py-3.5 rounded-full border border-theme text-fg-60 hover:text-fg hover:border-purple-500/40 transition-all duration-300 text-sm w-full sm:w-auto text-center"
           >
-            Contact Me
+            {t("cta_contact")}
           </a>
         </div>
       </div>
 
       {/* Scroll indicator */}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-fg-25">
-        <span className="text-[10px] font-mono tracking-[0.25em]">SCROLL</span>
+        <span className="text-[10px] font-mono tracking-[0.25em]">{t("scroll")}</span>
         <div className="w-px h-10 bg-linear-to-b from-(--fg-25) to-transparent" />
       </div>
     </section>

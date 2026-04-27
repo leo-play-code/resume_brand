@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { addProject, deleteProject } from "@/lib/actions/projects";
+import { addProject, updateProject, deleteProject } from "@/lib/actions/projects";
 import ProjectsAdminClient from "./ProjectsAdminClient";
 
 export default async function ProjectsAdminPage() {
@@ -19,6 +19,7 @@ export default async function ProjectsAdminPage() {
       <ProjectsAdminClient
         projects={projects}
         addProject={addProject}
+        updateProject={updateProject}
         deleteProject={deleteProject}
       />
     </div>

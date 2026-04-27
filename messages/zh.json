@@ -1,0 +1,31 @@
+{
+  "nav": {
+    "about": "關於",
+    "projects": "作品",
+    "experience": "經歷",
+    "contact": "聯絡"
+  },
+  "hero": {
+    "greeting": "你好，我是",
+    "roles": ["全端工程師", "AI 工具開發者", "開源貢獻者"],
+    "cta_projects": "查看作品",
+    "cta_contact": "聯絡我",
+    "scroll": "滾動"
+  },
+  "projects": {
+    "eyebrow": "作品集",
+    "title": "精選作品",
+    "subtitle": "精心打造的工具、產品與實驗。"
+  },
+  "experience": {
+    "eyebrow": "旅程",
+    "title": "工作經歷"
+  },
+  "contact": {
+    "eyebrow": "聯絡",
+    "title_1": "一起",
+    "title_2": "合作。",
+    "subtitle": "開放新機會、合作邀請與有趣的對話。歡迎隨時聯絡。",
+    "footer": "Built with Next.js & GSAP."
+  }
+}

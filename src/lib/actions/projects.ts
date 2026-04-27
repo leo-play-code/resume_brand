@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { syncProjectTechToStack } from "@/lib/actions/tech-stack";
 
 async function requireAdmin() {
   const session = await getServerSession(authOptions);
@@ -16,13 +17,14 @@ export async function addProject(formData: FormData) {
   const techRaw = (formData.get("tech_stack") as string) ?? "";
   const techStack = techRaw.split(",").map((s) => s.trim()).filter(Boolean);
 
-  // TODO: remove 'as any' cast once `npx prisma generate` has been re-run
-  // (currently blocked by EPERM — dev server holds the query engine DLL).
-  await (prisma.project.create as any)({
+  await prisma.project.create({
     data: {
       name: formData.get("name") as string,
       description: formData.get("description") as string,
       longDescription: formData.get("long_description") as string,
+      nameEn: (formData.get("name_en") as string) || null,
+      descriptionEn: (formData.get("description_en") as string) || null,
+      longDescriptionEn: (formData.get("long_description_en") as string) || null,
       videoUrl: (formData.get("video_url") as string) || "",
       heroType: (formData.get("hero_type") as string) || "mp4",
       heroJsCode: (formData.get("hero_js_code") as string) || null,
@@ -33,6 +35,8 @@ export async function addProject(formData: FormData) {
       displayOrder: parseInt((formData.get("display_order") as string) || "0"),
     },
   });
+
+  await syncProjectTechToStack(techStack);
 
   revalidatePath("/");
   revalidatePath("/admin/projects");
@@ -50,7 +54,12 @@ export async function updateProject(id: string, formData: FormData) {
       name: formData.get("name") as string,
       description: formData.get("description") as string,
       longDescription: formData.get("long_description") as string,
+      nameEn: (formData.get("name_en") as string) || null,
+      descriptionEn: (formData.get("description_en") as string) || null,
+      longDescriptionEn: (formData.get("long_description_en") as string) || null,
       videoUrl: (formData.get("video_url") as string) || "",
+      heroType: (formData.get("hero_type") as string) || "mp4",
+      heroJsCode: (formData.get("hero_js_code") as string) || null,
       githubUrl: (formData.get("github_url") as string) || null,
       liveUrl: (formData.get("live_url") as string) || null,
       techStack,
@@ -58,6 +67,8 @@ export async function updateProject(id: string, formData: FormData) {
       displayOrder: parseInt((formData.get("display_order") as string) || "0"),
     },
   });
+
+  await syncProjectTechToStack(techStack);
 
   revalidatePath("/");
   revalidatePath("/admin/projects");

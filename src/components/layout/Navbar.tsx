@@ -4,18 +4,24 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { Sun, Moon } from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
+import { usePathname, useRouter } from "next/navigation";
 import { siteConfig } from "@/lib/config";
 import { useTheme } from "@/components/providers/ThemeProvider";
 import UserMenu from "@/components/ui/UserMenu";
 
 const NAV_LINKS = [
-  { href: "#about",      label: "About" },
-  { href: "#projects",   label: "Projects" },
-  { href: "#experience", label: "Experience" },
-  { href: "#contact",    label: "Contact" },
-];
+  { href: "#about",      labelKey: "about" },
+  { href: "#projects",   labelKey: "projects" },
+  { href: "#experience", labelKey: "experience" },
+  { href: "#contact",    labelKey: "contact" },
+] as const;
 
 export default function Navbar() {
+  const t = useTranslations("nav");
+  const locale = useLocale();
+  const pathname = usePathname();
+  const router = useRouter();
   const navRef = useRef<HTMLElement>(null);
   const { theme, toggle } = useTheme();
 
@@ -50,7 +56,7 @@ export default function Navbar() {
                 href={link.href}
                 className="text-fg-50 text-sm hover:text-fg transition-colors duration-200 tracking-wide"
               >
-                {link.label}
+                {t(link.labelKey)}
               </a>
             </li>
           ))}
@@ -58,6 +64,18 @@ export default function Navbar() {
 
         {/* Right side */}
         <div className="flex items-center gap-3">
+          {/* Language toggle */}
+          <button
+            onClick={() => {
+              const newLocale = locale === "zh" ? "en" : "zh";
+              const newPath = pathname.replace(`/${locale}`, `/${newLocale}`);
+              router.push(newPath || `/${newLocale}`);
+            }}
+            className="px-2.5 py-1.5 rounded-lg border border-theme bg-surface text-fg-50 hover:text-fg hover:border-purple-500/40 text-xs font-mono transition-all duration-300"
+          >
+            {locale === "zh" ? "EN" : "中文"}
+          </button>
+
           {/* Theme toggle */}
           <button
             onClick={toggle}

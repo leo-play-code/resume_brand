@@ -1,0 +1,31 @@
+{
+  "nav": {
+    "about": "About",
+    "projects": "Projects",
+    "experience": "Experience",
+    "contact": "Contact"
+  },
+  "hero": {
+    "greeting": "Hello, I'm",
+    "roles": ["Full Stack Engineer", "AI Tools Builder", "Open Source Contributor"],
+    "cta_projects": "View Projects",
+    "cta_contact": "Contact Me",
+    "scroll": "SCROLL"
+  },
+  "projects": {
+    "eyebrow": "Work",
+    "title": "Featured Projects",
+    "subtitle": "A selection of things I've built — tools, products, and experiments."
+  },
+  "experience": {
+    "eyebrow": "Journey",
+    "title": "Experience"
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title_1": "Let's work",
+    "title_2": "together.",
+    "subtitle": "Open to new opportunities, collaborations, and interesting conversations. Don't be a stranger.",
+    "footer": "Built with Next.js & GSAP."
+  }
+}

@@ -1,26 +1,13 @@
 "use client";
 
-import { useRef } from "react";
 import { ExternalLink } from "lucide-react";
 import { GitHubIcon } from "@/components/ui/Icons";
 import type { Project } from "@/lib/data/projects";
 
 export default function ProjectCard({ project }: { project: Project }) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  const handleMouseEnter = () => videoRef.current?.play().catch(() => {});
-  const handleMouseLeave = () => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.pause();
-    v.currentTime = 0;
-  };
-
   return (
     <article
       className="group relative rounded-2xl border border-theme bg-surface overflow-hidden hover:border-purple-500/30 hover:-translate-y-1.5 transition-all duration-500 hover:glow-card"
-      onMouseEnter={project.heroType === "js-demo" ? undefined : handleMouseEnter}
-      onMouseLeave={project.heroType === "js-demo" ? undefined : handleMouseLeave}
     >
       {/* ── Media ──────────────────────────────────── */}
       <div className="relative aspect-video bg-surface-2 overflow-hidden">
@@ -34,10 +21,9 @@ export default function ProjectCard({ project }: { project: Project }) {
           />
         ) : project.videoUrl ? (
           <video
-            ref={videoRef}
             src={project.videoUrl}
-            muted loop playsInline preload="metadata"
-            className="w-full h-full object-cover"
+            autoPlay muted loop playsInline
+            className="w-full h-full object-contain"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
