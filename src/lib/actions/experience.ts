@@ -22,6 +22,35 @@ export async function addExperience(formData: FormData) {
   await prisma.experience.create({
     data: {
       company: formData.get("company") as string,
+      companyEn: (formData.get("company_en") as string) || "",
+      role: formData.get("role") as string,
+      period: formData.get("period") as string,
+      description,
+      roleEn: (formData.get("role_en") as string) || "",
+      descriptionEn,
+      type: (formData.get("type") as string) || "work",
+      displayOrder: parseInt((formData.get("display_order") as string) || "0"),
+    },
+  });
+
+  revalidatePath("/");
+  revalidatePath("/admin/experience");
+}
+
+export async function updateExperience(id: string, formData: FormData) {
+  await requireAdmin();
+
+  const descRaw = (formData.get("description") as string) ?? "";
+  const description = descRaw.split("\n").map((s) => s.trim()).filter(Boolean);
+
+  const descEnRaw = (formData.get("description_en") as string) ?? "";
+  const descriptionEn = descEnRaw.split("\n").map((s) => s.trim()).filter(Boolean);
+
+  await prisma.experience.update({
+    where: { id },
+    data: {
+      company: formData.get("company") as string,
+      companyEn: (formData.get("company_en") as string) || "",
       role: formData.get("role") as string,
       period: formData.get("period") as string,
       description,

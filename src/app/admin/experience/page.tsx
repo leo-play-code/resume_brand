@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { addExperience, deleteExperience } from "@/lib/actions/experience";
+import { addExperience, updateExperience, deleteExperience } from "@/lib/actions/experience";
 import ExperienceAdminClient from "./ExperienceAdminClient";
 
 export default async function ExperienceAdminPage() {
@@ -19,6 +19,7 @@ export default async function ExperienceAdminPage() {
       <ExperienceAdminClient
         items={items}
         addExperience={addExperience}
+        updateExperience={updateExperience}
         deleteExperience={deleteExperience}
       />
     </div>

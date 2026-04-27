@@ -43,6 +43,7 @@ model TechStack {
 model Experience {
   id           String   @id @default(uuid())
   company      String
+  companyEn    String?  @default("") @map("company_en")
   role         String
   period       String
   description  String[]

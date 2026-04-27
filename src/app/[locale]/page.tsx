@@ -49,7 +49,7 @@ async function getData(locale: string) {
     const experiences =
       dbExperiences.length > 0
         ? dbExperiences.map((e) => ({
-            company: e.company,
+            company: locale === "en" && e.companyEn ? e.companyEn : e.company,
             role: locale === "en" ? (e.roleEn || e.role) : e.role,
             period: e.period,
             description: locale === "en" && e.descriptionEn.length > 0 ? e.descriptionEn : e.description,

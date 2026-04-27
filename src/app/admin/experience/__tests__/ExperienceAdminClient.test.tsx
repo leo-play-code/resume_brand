@@ -35,7 +35,7 @@ describe('ExperienceAdminClient', () => {
     render(
       <ExperienceAdminClient
         items={mockItems as any}
-        addExperience={noopAction}
+        addExperience={noopAction} updateExperience={noopAction}
         deleteExperience={noopAction}
       />
     )
@@ -47,7 +47,7 @@ describe('ExperienceAdminClient', () => {
     render(
       <ExperienceAdminClient
         items={[]}
-        addExperience={noopAction}
+        addExperience={noopAction} updateExperience={noopAction}
         deleteExperience={noopAction}
       />
     )
@@ -58,7 +58,7 @@ describe('ExperienceAdminClient', () => {
     render(
       <ExperienceAdminClient
         items={[]}
-        addExperience={noopAction}
+        addExperience={noopAction} updateExperience={noopAction}
         deleteExperience={noopAction}
       />
     )
@@ -70,7 +70,7 @@ describe('ExperienceAdminClient', () => {
     const { container } = render(
       <ExperienceAdminClient
         items={[]}
-        addExperience={noopAction}
+        addExperience={noopAction} updateExperience={noopAction}
         deleteExperience={noopAction}
       />
     )
@@ -87,7 +87,7 @@ describe('ExperienceAdminClient', () => {
     const { container } = render(
       <ExperienceAdminClient
         items={[]}
-        addExperience={noopAction}
+        addExperience={noopAction} updateExperience={noopAction}
         deleteExperience={noopAction}
       />
     )
@@ -107,7 +107,7 @@ describe('ExperienceAdminClient', () => {
     const { container } = render(
       <ExperienceAdminClient
         items={[]}
-        addExperience={noopAction}
+        addExperience={noopAction} updateExperience={noopAction}
         deleteExperience={noopAction}
       />
     )
@@ -132,7 +132,7 @@ describe('ExperienceAdminClient', () => {
     const { container } = render(
       <ExperienceAdminClient
         items={[]}
-        addExperience={noopAction}
+        addExperience={noopAction} updateExperience={noopAction}
         deleteExperience={noopAction}
       />
     )
