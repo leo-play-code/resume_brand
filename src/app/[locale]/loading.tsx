@@ -1,4 +1,4 @@
-export default function Loading() {
+export default function LocaleLoading() {
   return (
     <div className="min-h-screen bg-base flex items-center justify-center">
       <div

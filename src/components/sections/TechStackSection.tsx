@@ -27,7 +27,8 @@ export default function TechStackSection({ row1, row2 }: Props) {
         { y: 40, opacity: 0 },
         {
           y: 0, opacity: 1, duration: 0.9, ease: "power3.out",
-          scrollTrigger: { trigger: titleRef.current, start: "top 88%" },
+          immediateRender: false,
+          scrollTrigger: { trigger: titleRef.current, start: "top 95%", once: true },
         }
       );
     },

@@ -26,7 +26,13 @@ export default function LenisProvider({
 
     gsap.ticker.lagSmoothing(0);
 
+    // Refresh after fonts/images settle so ScrollTrigger positions are correct
+    const rafId = requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+    });
+
     return () => {
+      cancelAnimationFrame(rafId);
       lenis.destroy();
     };
   }, []);

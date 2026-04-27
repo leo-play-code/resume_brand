@@ -27,7 +27,8 @@ export default function ProjectsSection({ projects }: Props) {
         { y: 40, opacity: 0 },
         {
           y: 0, opacity: 1, duration: 0.9, ease: "power3.out",
-          scrollTrigger: { trigger: titleRef.current, start: "top 88%" },
+          immediateRender: false,
+          scrollTrigger: { trigger: titleRef.current, start: "top 95%", once: true },
         }
       );
 
@@ -37,7 +38,8 @@ export default function ProjectsSection({ projects }: Props) {
           { y: 60, opacity: 0 },
           {
             y: 0, opacity: 1, duration: 0.85, stagger: 0.12, ease: "power3.out",
-            scrollTrigger: { trigger: gridRef.current, start: "top 82%" },
+            immediateRender: false,
+            scrollTrigger: { trigger: gridRef.current, start: "top 95%", once: true },
           }
         );
       }

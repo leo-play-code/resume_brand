@@ -30,7 +30,8 @@ export default function ContactSection() {
         { y: 50, opacity: 0 },
         {
           y: 0, opacity: 1, duration: 1, ease: "power3.out",
-          scrollTrigger: { trigger: contentRef.current, start: "top 85%" },
+          immediateRender: false,
+          scrollTrigger: { trigger: contentRef.current, start: "top 95%", once: true },
         }
       );
     },

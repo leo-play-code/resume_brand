@@ -27,7 +27,8 @@ export default function TimelineSection({ experiences }: Props) {
         { y: 40, opacity: 0 },
         {
           y: 0, opacity: 1, duration: 0.9, ease: "power3.out",
-          scrollTrigger: { trigger: titleRef.current, start: "top 88%" },
+          immediateRender: false,
+          scrollTrigger: { trigger: titleRef.current, start: "top 95%", once: true },
         }
       );
 
@@ -38,7 +39,8 @@ export default function TimelineSection({ experiences }: Props) {
           { x: -40, opacity: 0 },
           {
             x: 0, opacity: 1, duration: 0.75, stagger: 0.15, ease: "power3.out",
-            scrollTrigger: { trigger: listRef.current, start: "top 82%" },
+            immediateRender: false,
+            scrollTrigger: { trigger: listRef.current, start: "top 95%", once: true },
           }
         );
       }
