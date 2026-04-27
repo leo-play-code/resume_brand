@@ -90,7 +90,7 @@ export default function HeroSection() {
     <section
       ref={sectionRef}
       id="about"
-      className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden"
+      className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-24 md:pt-0 overflow-hidden"
     >
       {/* Huge section number watermark */}
       <span className="section-num" style={{ top: "-2%", right: "2%", opacity: 0.03 }}>
