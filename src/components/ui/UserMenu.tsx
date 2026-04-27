@@ -6,8 +6,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { LogIn, LayoutDashboard, LogOut } from "lucide-react";
 
+const adminEnabled = process.env.NEXT_PUBLIC_ADMIN_ENABLED === "true";
+
 export default function UserMenu() {
   const { data: session, status } = useSession();
+
+  if (!adminEnabled) return null;
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
