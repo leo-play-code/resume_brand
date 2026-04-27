@@ -35,9 +35,9 @@ export default function TimelineSection({ experiences }: Props) {
       if (items?.length) {
         gsap.fromTo(
           Array.from(items),
-          { x: -50, opacity: 0 },
+          { x: -40, opacity: 0 },
           {
-            x: 0, opacity: 1, duration: 0.75, stagger: 0.18, ease: "power3.out",
+            x: 0, opacity: 1, duration: 0.75, stagger: 0.15, ease: "power3.out",
             scrollTrigger: { trigger: listRef.current, start: "top 82%" },
           }
         );
@@ -47,18 +47,27 @@ export default function TimelineSection({ experiences }: Props) {
   );
 
   return (
-    <section ref={sectionRef} id="experience" className="py-24 px-6">
+    <section ref={sectionRef} id="experience" className="py-28 px-6">
       <div className="max-w-3xl mx-auto">
-        <div ref={titleRef} className="text-center mb-16">
-          <p className="text-purple-400 text-xs font-mono tracking-[0.3em] uppercase mb-4">
-            {t("eyebrow")}
-          </p>
-          <h2 className="text-3xl md:text-5xl font-bold text-fg">
-            {t("title")}
-          </h2>
+        {/* Header */}
+        <div ref={titleRef} className="relative mb-16">
+          <span className="section-num" style={{ top: "-30px", left: 0 }}>04</span>
+
+          <div className="relative z-10">
+            <p className="text-(--accent) text-[10px] tracking-[0.4em] uppercase font-mono mb-4">
+              ——— {t("eyebrow")}
+            </p>
+            <h2 className="font-sans font-bold text-[clamp(2rem,6vw,4rem)] text-fg leading-none tracking-tight">
+              {t("title")}
+            </h2>
+          </div>
         </div>
 
+        {/* Timeline */}
         <div ref={listRef} className="relative">
+          {/* Vertical line */}
+          <div className="absolute left-0 top-2 bottom-0 w-px bg-border" />
+
           {experiences.map((exp, i) => (
             <TimelineItem key={i} exp={exp} isLast={i === experiences.length - 1} />
           ))}

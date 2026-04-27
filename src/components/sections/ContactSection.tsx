@@ -44,58 +44,60 @@ export default function ContactSection() {
   };
 
   return (
-    <section ref={sectionRef} id="contact" className="relative py-32 px-6 overflow-hidden">
-      {/* Bottom radial glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_100%,rgba(139,92,246,0.12),transparent)]" />
+    <section ref={sectionRef} id="contact" className="relative py-36 px-6 overflow-hidden">
+      {/* Top border accent */}
+      <div className="absolute top-0 left-6 right-6 h-px bg-border" />
 
-      <div ref={contentRef} className="relative max-w-2xl mx-auto text-center">
-        <p className="text-purple-400 text-xs font-mono tracking-[0.3em] uppercase mb-6">
-          {t("eyebrow")}
-        </p>
+      <div ref={contentRef} className="relative max-w-6xl mx-auto">
+        {/* Section number watermark */}
+        <span className="section-num" style={{ top: "-20px", right: 0 }}>05</span>
 
-        <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-fg mb-6 leading-tight">
-          {t("title_1")}{" "}
-          <span className="gradient-text">{t("title_2")}</span>
-        </h2>
+        <div className="relative z-10">
+          <p className="text-(--accent) text-[10px] tracking-[0.4em] uppercase font-mono mb-6">
+            ——— {t("eyebrow")}
+          </p>
 
-        <p className="text-fg-35 text-base md:text-lg mb-12 leading-relaxed max-w-md mx-auto">
-          {t("subtitle")}
-        </p>
+          <h2 className="font-sans font-bold text-[clamp(3rem,10vw,8rem)] text-fg leading-[0.9] tracking-tight mb-12 max-w-4xl">
+            {t("title_1")}{" "}
+            <span className="text-(--accent)">{t("title_2")}</span>
+          </h2>
 
-        {/* Email copy button */}
-        <button
-          onClick={handleCopy}
-          className="group inline-flex items-center gap-3 px-7 py-4 rounded-full border border-theme bg-surface hover:border-purple-500/45 hover:bg-purple-500/8 text-fg transition-all duration-300 hover:shadow-[0_0_30px_rgba(139,92,246,0.25)] mb-12 text-sm md:text-base w-full sm:w-auto justify-center"
-        >
-          <Mail size={18} className="text-purple-400 shrink-0" />
-          <span className="font-mono">{siteConfig.email}</span>
-          {copied ? (
-            <Check size={15} className="text-green-400 shrink-0" />
-          ) : (
-            <Copy size={15} className="text-fg-25 group-hover:text-fg-55 transition-colors shrink-0" />
-          )}
-        </button>
-
-        {/* Social links */}
-        <div className="flex items-center justify-center gap-3 mb-16">
-          {SOCIALS.map(({ icon: Icon, href, label }) => (
-            <a
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={label}
-              className="p-3 rounded-full border border-theme bg-surface hover:border-purple-500/35 hover:bg-purple-500/8 text-fg-45 hover:text-fg transition-all duration-300 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)]"
+          <div className="flex flex-col sm:flex-row items-start gap-4 mb-14">
+            {/* Email copy button */}
+            <button
+              onClick={handleCopy}
+              className="group inline-flex items-center gap-3 px-6 py-3.5 border border-theme hover:border-(--accent) bg-surface hover:bg-(--accent)/5 text-fg transition-all duration-200 text-sm"
             >
-              <Icon size={19} />
-            </a>
-          ))}
-        </div>
+              <Mail size={15} className="text-(--accent) shrink-0" />
+              <span className="font-mono text-xs">{siteConfig.email}</span>
+              {copied ? (
+                <Check size={13} className="text-(--accent) shrink-0" />
+              ) : (
+                <Copy size={13} className="text-fg-25 group-hover:text-fg-55 transition-colors shrink-0" />
+              )}
+            </button>
 
-        {/* Footer */}
-        <p className="text-fg-20 text-xs font-mono">
-          © {new Date().getFullYear()} {siteConfig.ownerName}. {t("footer")}
-        </p>
+            {/* Social links */}
+            <div className="flex items-center gap-2">
+              {SOCIALS.map(({ icon: Icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="p-3 border border-theme hover:border-(--accent) text-fg-40 hover:text-(--accent) transition-all duration-200"
+                >
+                  <Icon size={17} />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <p className="text-fg-20 text-[10px] font-mono tracking-widest uppercase">
+            © {new Date().getFullYear()} {siteConfig.ownerName} — {t("footer")}
+          </p>
+        </div>
       </div>
     </section>
   );

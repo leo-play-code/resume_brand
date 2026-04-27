@@ -1,13 +1,45 @@
 "use client";
 
+import { useRef } from "react";
 import { ExternalLink } from "lucide-react";
+import gsap from "gsap";
 import { GitHubIcon } from "@/components/ui/Icons";
 import type { Project } from "@/lib/data/projects";
 
 export default function ProjectCard({ project }: { project: Project }) {
+  const cardRef = useRef<HTMLElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    gsap.to(card, {
+      rotateY: x * 18,
+      rotateX: -y * 18,
+      transformPerspective: 600,
+      duration: 0.08,
+      ease: "none",
+    });
+  };
+
+  const handleMouseLeave = () => {
+    gsap.to(cardRef.current, {
+      rotateY: 0,
+      rotateX: 0,
+      duration: 0.1,
+      ease: "none",
+    });
+  };
+
   return (
     <article
-      className="group relative rounded-2xl border border-theme bg-surface overflow-hidden hover:border-purple-500/30 hover:-translate-y-1.5 transition-all duration-500 hover:glow-card"
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="group relative bg-background overflow-hidden transition-all duration-300 hover:glow-card"
+      style={{ transformStyle: "preserve-3d" }}
     >
       {/* ── Media ──────────────────────────────────── */}
       <div className="relative aspect-video bg-surface-2 overflow-hidden">
@@ -27,26 +59,25 @@ export default function ProjectCard({ project }: { project: Project }) {
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
-            <span className="text-7xl font-bold gradient-text opacity-15 select-none">
+            <span className="text-7xl font-sans font-bold text-(--accent) opacity-10 select-none">
               {project.name.charAt(0)}
             </span>
           </div>
         )}
 
-        {/* Bottom gradient fade — dark overlay works on video in both themes */}
-        <div className="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-background/80 via-transparent to-transparent" />
 
-        {/* Hover links */}
-        <div className="absolute top-3.5 right-3.5 flex gap-2 opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all duration-300">
+        {/* Hover links — theme-aware */}
+        <div className="absolute top-3 right-3 flex gap-1.5 opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all duration-200">
           {project.githubUrl && (
             <a
               href={project.githubUrl}
               target="_blank" rel="noopener noreferrer"
               aria-label="GitHub"
               onClick={(e) => e.stopPropagation()}
-              className="p-2 rounded-full bg-black/60 backdrop-blur-sm border border-white/10 hover:border-white/30 text-white/70 hover:text-white transition-all duration-200"
+              className="p-2 bg-background border border-theme hover:border-(--accent) text-fg-50 hover:text-(--accent) transition-all duration-150"
             >
-              <GitHubIcon size={15} />
+              <GitHubIcon size={14} />
             </a>
           )}
           {project.liveUrl && (
@@ -55,32 +86,38 @@ export default function ProjectCard({ project }: { project: Project }) {
               target="_blank" rel="noopener noreferrer"
               aria-label="Live site"
               onClick={(e) => e.stopPropagation()}
-              className="p-2 rounded-full bg-black/60 backdrop-blur-sm border border-white/10 hover:border-white/30 text-white/70 hover:text-white transition-all duration-200"
+              className="p-2 bg-background border border-theme hover:border-(--accent) text-fg-50 hover:text-(--accent) transition-all duration-150"
             >
-              <ExternalLink size={15} />
+              <ExternalLink size={14} />
             </a>
           )}
         </div>
       </div>
 
       {/* ── Body ───────────────────────────────────── */}
-      <div className="p-6">
-        <h3 className="text-lg font-bold text-fg mb-1 group-hover:gradient-text transition-all duration-300">
-          {project.name}
-        </h3>
+      <div className="p-6 border-t border-theme">
+        <div className="flex items-start justify-between gap-4 mb-2">
+          <h3 className="text-base font-sans font-bold text-fg group-hover:text-(--accent) transition-colors duration-200">
+            {project.name}
+          </h3>
+          <span className="text-[10px] text-fg-25 font-mono tracking-widest uppercase shrink-0 mt-1">
+            {project.techStack[0]}
+          </span>
+        </div>
+
         <p className="text-fg-35 text-xs font-mono mb-3 tracking-wide">
           {project.description}
         </p>
-        <p className="text-fg-55 text-sm leading-relaxed mb-5">
+        <p className="text-fg-50 text-xs leading-relaxed mb-5">
           {project.longDescription}
         </p>
 
         {/* Tech chips */}
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap gap-1">
           {project.techStack.map((tech) => (
             <span
               key={tech}
-              className="text-[11px] px-2.5 py-0.5 rounded-full border border-theme bg-surface text-fg-45 font-mono"
+              className="text-[10px] px-2 py-0.5 border border-theme text-fg-35 font-mono"
             >
               {tech}
             </span>

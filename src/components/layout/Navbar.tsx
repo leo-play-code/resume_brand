@@ -44,26 +44,31 @@ export default function Navbar() {
     >
       <div className="max-w-6xl mx-auto flex items-center justify-between">
         {/* Logo */}
-        <a href="#" className="font-mono font-bold text-lg tracking-wider">
-          <span className="gradient-text">{siteConfig.ownerInitials}</span>
+        <a
+          href="#"
+          className="font-sans font-bold text-base tracking-widest uppercase text-fg hover:text-(--accent) transition-colors duration-200"
+        >
+          {siteConfig.ownerInitials}
         </a>
 
         {/* Desktop links */}
-        <ul className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.map((link) => (
+        <ul className="hidden md:flex items-center gap-10">
+          {NAV_LINKS.map((link, i) => (
             <li key={link.href}>
               <a
                 href={link.href}
-                className="text-fg-50 text-sm hover:text-fg transition-colors duration-200 tracking-wide"
+                className="group relative text-fg-40 text-xs hover:text-fg transition-colors duration-200 tracking-widest uppercase"
               >
+                <span className="text-(--accent) mr-1 text-[10px]">0{i + 1}.</span>
                 {t(link.labelKey)}
+                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-(--accent) group-hover:w-full transition-all duration-300" />
               </a>
             </li>
           ))}
         </ul>
 
         {/* Right side */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           {/* Language toggle */}
           <button
             onClick={() => {
@@ -71,7 +76,7 @@ export default function Navbar() {
               const newPath = pathname.replace(`/${locale}`, `/${newLocale}`);
               router.push(newPath || `/${newLocale}`);
             }}
-            className="px-2.5 py-1.5 rounded-lg border border-theme bg-surface text-fg-50 hover:text-fg hover:border-purple-500/40 text-xs font-mono transition-all duration-300"
+            className="text-fg-40 hover:text-(--accent) text-xs tracking-widest uppercase transition-colors duration-200"
           >
             {locale === "zh" ? "EN" : "中文"}
           </button>
@@ -80,9 +85,9 @@ export default function Navbar() {
           <button
             onClick={toggle}
             aria-label="Toggle theme"
-            className="p-2 rounded-full border border-theme bg-surface text-fg-50 hover:text-fg hover:border-purple-500/40 hover:bg-purple-500/6 transition-all duration-300"
+            className="text-fg-40 hover:text-(--accent) transition-colors duration-200 p-1"
           >
-            {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+            {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
           </button>
 
           {/* User avatar / sign-in */}

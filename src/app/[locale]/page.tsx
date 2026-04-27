@@ -5,6 +5,7 @@ import TechStackSection from "@/components/sections/TechStackSection";
 import ProjectsSection from "@/components/sections/ProjectsSection";
 import TimelineSection from "@/components/sections/TimelineSection";
 import ContactSection from "@/components/sections/ContactSection";
+import CustomCursor from "@/components/ui/CustomCursor";
 
 import { projects as staticProjects } from "@/lib/data/projects";
 import { experiences as staticExperiences } from "@/lib/data/experience";
@@ -75,6 +76,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
   return (
     <main>
+      <CustomCursor />
       <Navbar />
       <HeroSection />
       <TechStackSection row1={techRow1} row2={techRow2} />
