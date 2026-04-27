@@ -37,6 +37,11 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local video files — use Vercel Blob for production
+/public/videos/*.mp4
+/public/videos/*.webm
+/public/videos/*.mov
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
